@@ -50,7 +50,7 @@ ctrl shift arrow 된 채에서 keyup되서 ghost가 realized되면 head 스토�
 
 */
 
-setContext('createBrotherContainer', createBrotherContainer)
+//setContext('createBrotherContainer', createBrotherContainer)
 
 let focusedContainer = null //초기값
 let focusReadyContainer = null

@@ -16,7 +16,7 @@ https://armadillo-dev.github.io/ui/ux/benefit-and-cost-of-ui-component-framework
 <script>
 import Fontfetcher from "./Fontfetcher.svelte"
 import Header from "./Header.svelte"
-/* import Content from "./Content.svelte" */
+import Content from "./Content.svelte"
 import MultilineTextarea from './lib/MultilineTextarea.svelte'
 import Container from "./Container.svelte"
 
@@ -39,6 +39,7 @@ let i = 1
   asdfsaf
   <MultilineTextarea placeholder={"hi"}/>
   <Container {container} {i}/>
+  <Content />
 </main>
 
 

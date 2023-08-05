@@ -1,75 +1,82 @@
-import { writable, derived } from 'svelte/store';
+import { writable, derived } from "svelte/store";
 
 //이 store.js 파일은 Head의 내용을 다루는 함수들을 모아넣는 "Head.js"로 바꾸고, Head의 내용은 각자 다른 ""Head 이름".json 파일에 담겨야 할 것이다.
 
 export let default_thot = {
   id: 0,
-  heading: 'Heading',
-  content: 'Content',
-  children: []
+  heading: "Heading",
+  content: "Content",
+  children: [],
   metadata: {
-    'Created date': null,
-    'Modified date': null,
-    'History': null
+    "Created date": null,
+    "Modified date": null,
+    History: null,
   },
-  customMetadata: {}
-}
+  customMetadata: {},
+};
 
 const default_thot_customMetadata = {
-  'Done': {icon: "checkbox", visual: []},
-  'Logically sound': {icon: "checkbox", visual: []},
-  'Important': {icon: '!', visual: ["hilight"]}
-}
+  Done: { icon: "checkbox", visual: [] },
+  "Logically sound": { icon: "checkbox", visual: [] },
+  Important: { icon: "!", visual: ["hilight"] },
+};
 
 let thisHead = {
   thots: [
-  {id: 0, heading: '1st', content: 'thot 1', children: [1,4], 
-  metadata: {}, 
-  customMetadata: {}},
-  {id: 1, heading: '2nd', content: 'thot 1.1', children: [5]},
-  {id: 2, heading: '5th', content: 'thot 1.2.1', children: [3]},
-  {id: 3, heading: '6th', content: 'thot 1.2.1.1', children: []},
-  {id: 4, heading: '4th', content: 'thot 1.2', children: [2]},
-  {id: 5, heading: '3th', content: 'thot 1.1.1', children: []}
-  ]
-}
-  
-let seedThot = thisHead.thots[0]
+    {
+      id: 0,
+      heading: "1st",
+      content: "thot 1",
+      children: [1, 4],
+      metadata: {},
+      customMetadata: {},
+    },
+    { id: 1, heading: "2nd", content: "thot 1.1", children: [5] },
+    { id: 2, heading: "5th", content: "thot 1.2.1", children: [3] },
+    { id: 3, heading: "6th", content: "thot 1.2.1.1", children: [] },
+    { id: 4, heading: "4th", content: "thot 1.2", children: [2] },
+    { id: 5, heading: "3th", content: "thot 1.1.1", children: [] },
+  ],
+};
+
+let seedThot = thisHead.thots[0];
 
 let max_find_repetition = 30; //한번에 찾을 thot들의 최대 개수
 
 function fetchContainers_indentedThotsView(seedThot) {
   let find_repetition = 0;
-  let result = []
-  let index = [0]
+  let result = [];
+  let index = [0];
 
   function handleThot(thot) {
-    find_repetition++
-    index[index.length-1]++
-    let i = [...index] //deep copy!
-    result = [...result, {index: i, thot: thot}]
-    if (thot.children.length > 0){//if thot.children exist
-      index.push(0)
-      for (let id of thot.children) { //여기에 문제가? ...let을 안붙인 거였다. array 안 item에게. id가 정의가 안되있던것.
-        let child = thisHead.thots.find(thot => thot.id === id)
+    find_repetition++;
+    index[index.length - 1]++;
+    let i = [...index]; //deep copy!
+    result = [...result, { index: i, thot: thot }];
+    if (thot.children.length > 0) {
+      //if thot.children exist
+      index.push(0);
+      for (let id of thot.children) {
+        //여기에 문제가? ...let을 안붙인 거였다. array 안 item에게. id가 정의가 안되있던것.
+        let child = thisHead.thots.find((thot) => thot.id === id);
         if (find_repetition < max_find_repetition) {
-          handleThot(child)
-        }
-        else {
+          handleThot(child);
+        } else {
           break;
         }
       }
-    }
-    else {
-      index.pop()
+    } else {
+      index.pop();
     }
   }
-  handleThot(seedThot)
-  return result
+  handleThot(seedThot);
+  return result;
 }
 
 // 핵심!
-export let fetchedContainers = writable(fetchContainers_indentedThotsView(seedThot))
+export let fetchedContainers = writable(
+  fetchContainers_indentedThotsView(seedThot)
+);
 /*
 fetchedContainers 예시:
 fetchedContainers = [
@@ -79,7 +86,6 @@ fetchedContainers = [
   }
 ]
 */
-
 
 /* 
 function addMetadata(thot, metadataName, metadata) {
