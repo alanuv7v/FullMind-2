@@ -2,7 +2,10 @@
 </script>
 
 <main>
-  <div id="header">FullMind.fullmind*</div>
+  <div id="title">FullMind.head*</div>
+  <div id="tools">
+    <button>heads...</button>
+  </div>
 </main>
 
 
@@ -14,5 +17,19 @@
     /* font-family: 'Jeju Myeongjo', serif; */
     font-size: 16px;
     /* letter-spacing: 2px; */
+  }
+  main {
+    position: relative;
+  }
+  #tools {
+    display: flex;
+    flex-direction: row;
+    width: fit-content;
+    height: fit-content;
+  }
+  #title {
+    position: absolute;
+    top: 0px;
+    width: 100%;
   }
 </style>

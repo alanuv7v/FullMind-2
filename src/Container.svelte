@@ -18,7 +18,9 @@
 
   //variables to be used inside this component
   function formatIndex(array) {
-    return array.join(".")
+    if (array) {
+      return array.join(".")
+    }
   }
   export let index = container.index
   export let string_index = formatIndex(container.index) //이거 바꾸자. 이름을 string_index로. 
@@ -32,12 +34,12 @@
   export let contentTextarea;
 
   //getContext
-  /* const createBrotherContainer = getContext('createBrotherContainer')
+  const createBrotherContainer = getContext('createBrotherContainer')
   const moveContainerFocus = getContext('moveContainerFocus')
-  const focusContainerAt = getContext('focusContainerAt') */
+  const focusContainerAt = getContext('focusContainerAt')
 
-  /*let createNewContainer = getContext('createNewContainer')
-  let foldContainerChildren = getContext('foldContainerChildren')*/
+  let createNewContainer = getContext('createNewContainer')
+  let foldContainerChildren = getContext('foldContainerChildren')
  
 
   //Indent self
@@ -49,16 +51,15 @@
   
   //on keydown in textareas
   function onTextareaKeydown(e) {
-    /* let keyevent = e.detail.keyevent
+    let keyevent = e.detail.keyevent
     if(keyevent.key === 'Enter' && keyevent.ctrlKey) { //ctrl + Enter
       //goto or create new Container, and focus on it 
-      createBrotherContainer() 
+      createBrotherContainer(index, i) 
     }
     if (keyevent.key.search("Arrow")>-1 && keyevent.ctrlKey) { //ctrl + arrow key
       //move focus
       moveContainerFocus(index, i, keyevent.key)
-    }*/
-    ;
+    }
   }
 
   function onTextareaFocus() {

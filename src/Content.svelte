@@ -1,6 +1,6 @@
 <script>
 import Container from "./Container.svelte"
-import {fetchedContainers, default_thot} from "./store.js"
+import {fetchedContainers, default_thot, default_container} from "./store.js"
 import {setContext} from "svelte"
 /* import {thisHead} from "./App.svelte" */
 
@@ -14,14 +14,24 @@ $: Containers = []
   }
 } */
 
-/*
 function createBrotherContainer(index, i) {
   alert("triggered")
   let new_thot = default_thot
-  new_thot.id = index.slice(0, -1).push(index[index.length-1]+1)
-  containers = [...containers, {index: 0, thot: new_thot}]
-  alert({containers})
-  containers.update(containers => {containers=[...containers, ""]; return containers;})
+  let new_container = default_container
+  let index2 = [...index] //deep copy first
+  let former_part = index2.slice(0, -1) //index last digit ++
+  index2 = [...former_part, (index2[index2.length-1]+1)]
+  new_container.index = [...index2]
+  console.log(new_container.index)
+  new_container.thot = new_thot
+  $containers = [...$containers, new_container]
+  //containers.update(containers => containers.push(new_container))
+
+
+  console.log($containers)
+
+  //! need to update children data of the parent thot.
+  //Why the hell can't I use "update"?
 }
 
 function createGhostContainer(index) {
@@ -37,7 +47,6 @@ function createGhostContainer(index) {
 function realizeGhost(ghost) {
   ghost.root.classList.remove('ghost')
 }
-*/
 
 /*
 ctrl shift arrow 누르던 중에 esc 눌리면, 고스트를 삭제. 
@@ -50,7 +59,7 @@ ctrl shift arrow 된 채에서 keyup되서 ghost가 realized되면 head 스토�
 
 */
 
-//setContext('createBrotherContainer', createBrotherContainer)
+setContext('createBrotherContainer', createBrotherContainer)
 
 let focusedContainer = null //초기값
 let focusReadyContainer = null

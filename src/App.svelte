@@ -31,15 +31,13 @@ let i = 1
 
 <main>
   <Header />
+  <Content />
   폰트 테스트
   가나다라마바사 ABCDEFG
   The quick brown fox jumps over the lazy dog
   다람쥐 헌 쳇바퀴에 타고파
   !@#$%^&*
   asdfsaf
-  <MultilineTextarea placeholder={"hi"}/>
-  <Container {container} {i}/>
-  <Content />
 </main>
 
 

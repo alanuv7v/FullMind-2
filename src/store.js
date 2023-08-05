@@ -2,6 +2,11 @@ import { writable, derived } from "svelte/store";
 
 //이 store.js 파일은 Head의 내용을 다루는 함수들을 모아넣는 "Head.js"로 바꾸고, Head의 내용은 각자 다른 ""Head 이름".json 파일에 담겨야 할 것이다.
 
+export const default_container = {
+  index: [],
+  thot: {id: 0, heading: '', content: '', children: []}
+}
+
 export let default_thot = {
   id: 0,
   heading: "Heading",
@@ -86,6 +91,7 @@ fetchedContainers = [
   }
 ]
 */
+
 
 /* 
 function addMetadata(thot, metadataName, metadata) {
