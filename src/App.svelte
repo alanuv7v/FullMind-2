@@ -14,29 +14,37 @@ https://armadillo-dev.github.io/ui/ux/benefit-and-cost-of-ui-component-framework
 
 
 <script>
-/*   import Header from "./Header.svelte"
-  import Content from "./Content.svelte"
-  import Fontfetcher from "./Fontfetcher.svelte" */
+import Fontfetcher from "./Fontfetcher.svelte"
+import Header from "./Header.svelte"
+/* import Content from "./Content.svelte" */
+import MultilineTextarea from './lib/MultilineTextarea.svelte'
+import Container from "./Container.svelte"
 
+let container = {
+  index: [1,1,1],
+  thot: {id: 5, heading: '3th', content: 'thot 1.1.1', children: []}
+}
 
-
+let i = 1
 
 </script>
 
 <main>
-<!--   <Header />
-  <Content /> -->
+  <Header />
   폰트 테스트
   가나다라마바사 ABCDEFG
   The quick brown fox jumps over the lazy dog
   다람쥐 헌 쳇바퀴에 타고파
   !@#$%^&*
+  asdfsaf
+  <MultilineTextarea placeholder={"hi"}/>
+  <Container {container} {i}/>
 </main>
 
 
 <style>
-main {
-  height: 800px;
-}
+  main {
+    height: 800px;
+  }
 
 </style>

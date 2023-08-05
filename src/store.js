@@ -2,7 +2,7 @@ import { writable, derived } from 'svelte/store';
 
 //이 store.js 파일은 Head의 내용을 다루는 함수들을 모아넣는 "Head.js"로 바꾸고, Head의 내용은 각자 다른 ""Head 이름".json 파일에 담겨야 할 것이다.
 
-let default_thot = {
+export let default_thot = {
   id: 0,
   heading: 'Heading',
   content: 'Content',
@@ -16,9 +16,9 @@ let default_thot = {
 }
 
 const default_thot_customMetadata = {
-  'Done': {icon: checkbox, visual: []},
-  'Logically sound': {icon: checkbox, visual: []},
-  'Important': {icon: '!', visual: [hilight]}
+  'Done': {icon: "checkbox", visual: []},
+  'Logically sound': {icon: "checkbox", visual: []},
+  'Important': {icon: '!', visual: ["hilight"]}
 }
 
 let thisHead = {
@@ -68,8 +68,20 @@ function fetchContainers_indentedThotsView(seedThot) {
   return result
 }
 
+// 핵심!
 export let fetchedContainers = writable(fetchContainers_indentedThotsView(seedThot))
+/*
+fetchedContainers 예시:
+fetchedContainers = [
+  {
+    index: [1,1,1],
+    thot: {id: 5, heading: '3th', content: 'thot 1.1.1', children: []}
+  }
+]
+*/
 
+
+/* 
 function addMetadata(thot, metadataName, metadata) {
   let target = thisHead.thots.find((t) => {return thot.id === t.id})
   let changed = thot
@@ -84,20 +96,10 @@ function addCustomMetadata(thot, metadataName, metadata) {
 
 addMetadata(thisHead.thots[0], "done", true)
 console.log(thisHead.thots)
-
+ */
 
 /* function returnFetchedContainers() {
   const result = derived(containers, $containers => $containers)
 }
 
 export const returnFetchedContainers */
-
-/*
-class thot() {
-  text=
-  ID=
-  pernets=
-  children=
-}
-
-*/

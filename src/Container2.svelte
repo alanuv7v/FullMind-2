@@ -31,54 +31,6 @@
   let foldButton;
   export let contentTextarea;
 
-  //getContext
-  /* const createBrotherContainer = getContext('createBrotherContainer')
-  const moveContainerFocus = getContext('moveContainerFocus')
-  const focusContainerAt = getContext('focusContainerAt') */
-
-  /*let createNewContainer = getContext('createNewContainer')
-  let foldContainerChildren = getContext('foldContainerChildren')*/
- 
-
-  //Indent self
-  let indentSize = 20
-  let style = "margin-left:" + indentSize*container.index.length + "px;"
-  
-
-  //Event handlers
-  
-  //on keydown in textareas
-  function onTextareaKeydown(e) {
-    /* let keyevent = e.detail.keyevent
-    if(keyevent.key === 'Enter' && keyevent.ctrlKey) { //ctrl + Enter
-      //goto or create new Container, and focus on it 
-      createBrotherContainer() 
-    }
-    if (keyevent.key.search("Arrow")>-1 && keyevent.ctrlKey) { //ctrl + arrow key
-      //move focus
-      moveContainerFocus(index, i, keyevent.key)
-    }*/
-    ;
-  }
-
-  function onTextareaFocus() {
-    /* focusContainerAt(i) */
-    ;
-  }
-
-  function onFoldButtonClick() {
-    /* function foldContainerChildren(index) {
-    }
-    foldContainerChildren(index) */
-    //이 컨테이너의 index(n.n.n 형식으로 된것) 스트링을 그대로, 이 컨테이너 아래 것들부터 검색해서 display:none으로 설정한 뒤, 이 컨테이너의 fold 버튼의 비주얼을 바꾸는 것(fold/unfold 글씨변경, 일단)이 제일 단순무식하나 최적일듯 하다. 
-    //foldChildren = !foldChildren
-    ;
-  }
-
-  function onDiveButtonClick() {
-    ;
-  }
-    
 </script>
 
 <main bind:this={root}>
@@ -87,11 +39,10 @@
       <button type="button" class="dive">Dive</button>
       <button type="button" class="fold"
       bind:this={foldButton}
-      on:cilck={() => onFoldButtonClick()}>
-      {foldChildren ? 'unfold' : 'fold'}</button>
+      on:cilck={() => onFoldButtonClick()}>fold</button>
     </div>
     <div id="content">
-      <span id="index">{string_index}</span>
+      <span id="index">{index}</span>
       <div style="display:flex; flex-direction:column; width:100%;">
         <div id="heading"></div>
         <MultilineTextarea placeholder={container.thot.heading} on:keydown={onTextareaKeydown}  on:focus={onTextareaFocus}/>

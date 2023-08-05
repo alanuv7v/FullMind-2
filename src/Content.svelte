@@ -1,9 +1,11 @@
 <script>
 import Container from "./Container.svelte"
-import {containers, default_thot} from "./store.js"
+import {fetchedContainers, default_thot} from "./store.js"
 import {setContext} from "svelte"
 /* import {thisHead} from "./App.svelte" */
 
+let containers = fetchedContainers
+$: Containers = []
 
 /* const newContainer = () => {
   return {
@@ -12,13 +14,14 @@ import {setContext} from "svelte"
   }
 } */
 
+/*
 function createBrotherContainer(index, i) {
   alert("triggered")
   let new_thot = default_thot
   new_thot.id = index.slice(0, -1).push(index[index.length-1]+1)
   containers = [...containers, {index: 0, thot: new_thot}]
-  /* alert({containers})
-  containers.update(containers => {containers=[...containers, ""]; return containers;}) */
+  alert({containers})
+  containers.update(containers => {containers=[...containers, ""]; return containers;})
 }
 
 function createGhostContainer(index) {
@@ -34,6 +37,7 @@ function createGhostContainer(index) {
 function realizeGhost(ghost) {
   ghost.root.classList.remove('ghost')
 }
+*/
 
 /*
 ctrl shift arrow 누르던 중에 esc 눌리면, 고스트를 삭제. 
@@ -46,9 +50,8 @@ ctrl shift arrow 된 채에서 keyup되서 ghost가 realized되면 head 스토�
 
 */
 
-setContext('createNewContainer', createNewContainer)
+setContext('createBrotherContainer', createBrotherContainer)
 
-$: Containers = []
 let focusedContainer = null //초기값
 let focusReadyContainer = null
 
@@ -64,6 +67,7 @@ function focusContainer(C) {
   console.log(C)
   C.contentTextarea.focus()
 }
+
 function focusContainerAt(i) {
   let C = Containers[i]
   focusContainer(C)
@@ -187,7 +191,7 @@ setContext('foldContainerChildren', foldContainerChildren) */
 
 <main id="Content">
   {#each $containers as container, i}
-    <Container bind:this={Containers[i]} bind:self={Containers[i]} on:focus={focusContainer} {container} {i}/>
+    <Container bind:this={Containers[i]} on:focus={focusContainer} {container} {i}/>
     <!-- <Container bind:root={Containers[i]} {container}{i}/> -->
   {/each}
 </main>
