@@ -70,7 +70,8 @@
     color: transparent;
     background-color: transparent;
     z-index: 1;
-    transition: none !important; /* 진짜 중요 */
+    /* transition: none !important; */ /* 진짜 중요 */
+    transition: border 0.5s ease;
   }
   #inputTextarea::selection {
     color: white;

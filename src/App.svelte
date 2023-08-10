@@ -67,8 +67,13 @@ visualViewport.onresize = () => {
 
 
 <style lang="stylus">
+  :global(button) {
+    border: 0px solid transparent;
+    box-shadow: inset 1px 1px 2px 0px rgba(0,0,0,0.5);
+  }
   main {
     height: 800px;
+    background-color: rgba(225, 245, 231, 1);
   }
   #overlay {
     position: absolute;

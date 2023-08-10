@@ -15,6 +15,8 @@
     export let i;
   //data to expose
     export let root;
+    export let container_elem;
+    export let root_second_border;
 
   //variables to be used inside this component
   function formatIndex(array) {
@@ -58,7 +60,7 @@
     }
     if (keyevent.key.search("Arrow")>-1 && keyevent.ctrlKey) { //ctrl + arrow key
       //move focus
-      moveContainerFocus(index, i, keyevent.key)
+      moveContainerFocus(string_index, i, keyevent.key)
     }
   }
 
@@ -79,11 +81,18 @@
   function onDiveButtonClick() {
     ;
   }
-    
+
+  export function focusSelf() {
+    root.classList.add('focused')
+  }
+  export function unfocusSelf() {
+    root.classList.remove('focused')
+  }
+  
 </script>
 
 <main bind:this={root}>
-  <div id="container" style={style}>
+  <div id="container" bind:this={container_elem} style={style}>
     <div id="options">
       <button type="button" class="dive">Dive</button>
       <button type="button" class="fold"
@@ -94,22 +103,69 @@
     <div id="content">
       <span id="index">{string_index}</span>
       <div style="display:flex; flex-direction:column; width:100%;">
-        <div id="heading"></div>
-        <MultilineTextarea placeholder={data.thot.heading} on:keydown={onTextareaKeydown}  on:focus={onTextareaFocus} bind:inputTextarea={contentTextarea}/>
+        <div id="heading">
+          <MultilineTextarea placeholder={data.thot.heading} on:keydown={onTextareaKeydown}  on:focus={onTextareaFocus}/>
+        </div>
         <div id="contentTextarea">
           <MultilineTextarea placeholder={data.thot.content} on:keydown={onTextareaKeydown} on:focus={onTextareaFocus} bind:inputTextarea={contentTextarea}/>
         </div>
       </div>
     </div>
   </div>
+  <div id="root_second_border" bind:this={root_second_border}></div>
 </main>
 
 <style>
-  * {
-    box-sizing: border-box;
+  /* :global로 적은건 아예 모든, 어떤 svelte 파일의 element든지 다 적용되니까 여기서는 쓰지 말고 *로 대체하자. 
+  아예 글로벌하게 만들 스타일은 다른데에 적자.*/
+  
+  :global(*) {
+    transition: all 0.5s ease;
   }
   
+
+  :global(div#content:hover) {
+    border-color: rgba(240, 255, 239, 1) !important;
+    /* background-color: #f5ead5; */
+  }
+  :global(button:hover, textarea:hover) {
+    border-color: rgba(52, 74, 70, 0.5) !important;
+    /* background-color: #f5ead5; */
+  }
+  
+  :global(button:focus, button:focus-visible, textarea:focus, textarea:focus-visible) {
+    outline: 2px inset rgba(52, 74, 70, 0.5);
+  }
+
+  button:active {
+    background-color: blue;
+    color: white;
+  }
+
+  * {
+    box-sizing: border-box;
+    /* transition: background-color 1s steps(200); */
+  }
+
+  main {
+    position: relative;
+    
+    border: 4px solid;
+    border-color: transparent;
+    transition: border-color 0.2s ease-out, background-color 0.5s ease-out;
+  }
+  #root_second_border {
+    position: absolute;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+
+    border: 4px solid;
+    border-color: transparent;
+  }
   #container {
+    box-sizing: content-box;
+
 
     height: fit-content;
     display: flex;
@@ -119,9 +175,16 @@
     font-style: normal;
     font-size: 16px;
     
+    position: relative;
+    z-index: 2;
   }
+
   #content {
-    border: 1px solid #e0e0e0;
+    background-color: rgba(188, 230, 187, 1);
+    box-shadow: inset 1px 1px 4px -2px rgba(0,0,0,0.75);
+
+    border: 1px solid rgba(52, 74, 70, 0.56);
+    /* border: 1px solid #e0e0e0; */
     
     width: 100%;
     height: fit-content;
@@ -148,16 +211,16 @@
     font-weight: 700;
   }
   #options button.dive {
-    background-color: #215bfc;
+    background-color: rgba(52, 74, 70, 1);
     color: white;
   }
   #options button.fold {
-    background-color: #fae7cd;
-    color: #bfa21f;
+    background-color: rgba(151, 200, 128, 1);
+    color: black;
   }
 
   button {
-    border: 1px inset #e0e0e0;
+    /* border: 1px inset rgba(52, 74, 70, 0.5); */
     border-radius: 8px;
 
     /* width: fit-content; */
@@ -168,23 +231,6 @@
 
   }
 
-  :global(*) {
-    transition: all 0.2s ease;
-  }
-  :global(div#content:hover, button:hover, textarea:hover) {
-    border-color: #646cff !important;
-    background-color: #f5ead5;
-  }
-  
-  :global(button:focus, button:focus-visible, textarea:focus, textarea:focus-visible) {
-    outline: 2px solid #646cff;
-  }
-
-  button:active {
-    background-color: blue;
-    color: white;
-  }
-
   #contentTextarea {
     position:relative; /* 중요 */
     width: 100%;
@@ -193,16 +239,20 @@
   }
 
   #index {
-    border: 1px outset #e0e0e0;
     height: fit-content;
     margin-right: 8px;
     padding-left: 2px;
     padding-right: 2px;
+    border-radius: 10px;
+    
+    box-shadow: inset 1px 1px 0px 0px rgba(0,0,0,0.5),
+    inset -1px -1px 0px 0px rgba(226, 247, 228, 1);
   }
   #heading {
     text-align: left;
     width: 100%;
     height: fit-content;
+    margin-bottom: 4px;
   }
   /* textarea {
     background-color: transparent;

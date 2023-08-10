@@ -20,6 +20,7 @@
   }
   main {
     position: relative;
+    background-color: rgba(225, 225, 225, 1)
   }
   #tools {
     display: flex;

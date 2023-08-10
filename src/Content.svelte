@@ -16,7 +16,7 @@ $: containers_data = writable(fetchContainers_indentedThotsView(seedThot))
 $: Containers = []
 
 function fetch_containers_data() {
-  return acontainers_data = writable(fetchContainers_indentedThotsView(seedThot))
+  return containers_data = writable(fetchContainers_indentedThotsView(seedThot))
 }
 
 /* const newContainer = () => {
@@ -29,20 +29,21 @@ function fetch_containers_data() {
 function createBrotherContainer(data, i) {
   alert("triggered")
   let index = data.index
-  let new_thot = default_thot
+  let new_thot = JSON.parse(JSON.stringify(default_thot))
   //멍청아. 인덱스를 따로 부여해줄 필요가 없잖아. fetch하면서 알아서 생기는데.
-  /*let new_container = default_container
-  let index2 = [...index] //deep copy first
-  let former_part = index2.slice(0, -1) //index last digit ++
-  index2 = [...former_part, (index2[index2.length-1]+1)] 
-  new_container.index = [...index2]
-  console.log(new_container.index)
-  new_container.thot = new_thot
-  $containers_data = [...$containers_data, new_container]*/
-  //containers.update(containers => containers.push(new_container))
+    /*let new_container = default_container
+    let index2 = [...index] //deep copy first
+    let former_part = index2.slice(0, -1) //index last digit ++
+    index2 = [...former_part, (index2[index2.length-1]+1)] 
+    new_container.index = [...index2]
+    console.log(new_container.index)
+    new_container.thot = new_thot
+    $containers_data = [...$containers_data, new_container]*/
+    //containers.update(containers => containers.push(new_container))
+
   let parent_index = [...index].pop()
   let parent = $containers_data.find((data) => {return data.index === parent_index})
-  parent.thot.children = [...parent.thot.children, new_container.thot.id]
+  parent.thot.children = [...parent.thot.children, new_thot.id]
 
   console.log($containers_data)
 
@@ -51,12 +52,11 @@ function createBrotherContainer(data, i) {
 }
 
 function createGhostContainer(index) {
-  let ghost = newContainer()
-  ghost.index = index
+  let ghost = JSON.parse(JSON.stringify(default_container))
+  ghost.thot = JSON.parse(JSON.stringify(default_thot))
   ghost.root.classList.add('ghost')
 
-  containers_data.push(ghost)
-  containers_data = containers_data
+  $containers_data = [...$containers_data, ghost]
   return ghost
 }
 
@@ -84,10 +84,10 @@ function focusContainer(C) {
   console.log("F!")
   console.log(C)
   if (focusedContainer) {
-    focusedContainer.root.classList.remove('focused')
+    focusedContainer.unfocusSelf()
   }
   focusedContainer = C
-  C.root.classList.add('focused')
+  C.focusSelf()
   //중앙에 그 컨테이너 오도록 스크롤값 고치기(IndentedThots 뷰의 경우, 패닝 대신)
   console.log(C)
   C.contentTextarea.focus()
@@ -109,9 +109,9 @@ function moveContainerFocus(index, i, key) {
   //Containers[0].root.style.border = "1px solid red"
 
   let max_find_repetition = 50;
-  var parentIndex = "0";
+  let parentIndex = "0";
   if ("1".search(/\./)<0) {
-    parentIndex = index.slice(0, index.search(/.\d$/))
+    parentIndex = index.slice(0, index.search(/.\d$/)) //index에서 마지막 .과 숫자 지워서 parentIndex 찾기
   }
   let childIndex = index + ".1"
   let c = null;
@@ -120,13 +120,13 @@ function moveContainerFocus(index, i, key) {
       case 'ArrowUp':
         //find and focus a brother who is above the current focused container
         //자기보다 위에 있는 컨테이너들 중, index에서 마지막 숫자만 -1한 컨테이너 찾기. findLast() 메소드로 역방향으로 찾기.
-        if (parentIndex != 0) {
+        if (parentIndex != "0") {
           for (let find = i-1; (-1 < find)&&(max_find_repetition-find >= 0)&&(Containers.length-1>=find); find--) {
             c = Containers[find]
-            if (index.match(/\./g)&&c.index.match(/\./g)) {
-              if (index.match(/\./g).length === c.index.match(/\./g).length 
-              && c.index.search(parentIndex)===0 
-              && c.index!=parentIndex) { //형제라면:
+            if (index.match(/\./g)&&c.string_index.match(/\./g)) {
+              if (index.match(/\./g).length === c.string_index.match(/\./g).length 
+              && c.string_index.search(parentIndex)===0 
+              && c.string_index!=parentIndex) { //형제라면:
                 found = c
                 break;
               }
@@ -136,13 +136,12 @@ function moveContainerFocus(index, i, key) {
         if (found === null) {//부모를 못찾는다면:
           if (-1<i-1) {
             found = Containers[i-1]
-            console.log("sadfsafsa")
           }
           //대신 바로 아래 컨테이너를 focus
         }
         break;
       case 'ArrowDown':
-        if (parentIndex != 0) { //이게 최상위라 부모가 없고 따라서 형제도 못찾는 경우가 아니라면:
+        if (parentIndex != "0") { //이게 최상위라 부모가 없고 따라서 형제도 못찾는 경우가 아니라면:
           for (let find = i+1; (-1 < find)&&(find < find+max_find_repetition)&&(Containers.length-1>=find); find++) {
             c = Containers[find]
             /* if (parentindex === "1") {
@@ -150,10 +149,10 @@ function moveContainerFocus(index, i, key) {
               console.log(index.search(/.\d$/))
               console.log(index.slice(0, index.search(/.\d$/)))
             } */
-            if (index.match(/\./g)&&c.index.match(/\./g)) {
-              if (index.match(/\./g).length === c.index.match(/\./g).length &&
-              c.index.search(parentIndex)===0 
-              && c.index!=parentIndex) { //형제라면:
+            if (index.match(/\./g)&&c.string_index.match(/\./g)) {
+              if (index.match(/\./g).length === c.string_index.match(/\./g).length &&
+              c.string_index.search(parentIndex)===0 
+              && c.string_index!=parentIndex) { //형제라면:
                 found = c
                 break;
               }
@@ -164,7 +163,6 @@ function moveContainerFocus(index, i, key) {
           console.log("!!")
           if (i+1<=Containers.length-1) {
             found = Containers[i+1]
-            console.log("sadfsafsa")
           }
           //대신 바로 아래 컨테이너를 focus
         }
@@ -174,7 +172,7 @@ function moveContainerFocus(index, i, key) {
        //자기보다 위에 있는 컨테이너들 중, index에서 마지막 숫자 제거한 스트링으로 컨테이너 찾기. 역방향으로.
         for (let find = i; (-1 < find)&&(max_find_repetition-find >= 0)&&(Containers.length-1>=find); find--) {
           c = Containers[find]
-          if (c.index === parentIndex) { //부모 인덱스를 그대로 갖고있다면:
+          if (c.string_index === parentIndex) { //부모 인덱스를 그대로 갖고있다면:
             found = c
             break;
           }
@@ -184,7 +182,7 @@ function moveContainerFocus(index, i, key) {
         //자기 인덱스 +'.1', 즉 첫번째 자식을 정방향으로 찾기. 
         for (let find = i; (-1 < find)&&(find < find+max_find_repetition)&&(Containers.length-1>=find); find++) {
           c = Containers[find]
-          if (c.index === childIndex) { //첫번째 자식이라면:
+          if (c.string_index === childIndex) { //첫번째 자식이라면:
             found = c
             break;
           }
@@ -234,7 +232,9 @@ setContext('foldContainerChildren', foldContainerChildren) */
 
   }
   :global(.focused) {
-    outline: 4px solid blue;
+    /* outline: 4px solid blue; */
+    border-color: rgba(0, 20, 255, 0.4) !important;
+    background-color: rgba(132, 176, 160, 0.38) !important;
   }
   :global(.ghost) {
     outline: 4px solid skyblue;
