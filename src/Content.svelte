@@ -1,11 +1,23 @@
 <script>
 import Container from "./Container.svelte"
-import {fetchedContainers, default_thot, default_container} from "./store.js"
+import { writable, derived } from "svelte/store";
+import {thisHead, fetchedContainers, fetchContainers_indentedThotsView, default_thot, default_container} from "./store.js"
 import {setContext} from "svelte"
 /* import {thisHead} from "./App.svelte" */
-
-let containers = fetchedContainers
+let seedThot = {
+      id: 0,
+      heading: "1st",
+      content: "thot 1",
+      children: [1, 4],
+      metadata: {},
+      customMetadata: {},
+    }
+$: containers_data = writable(fetchContainers_indentedThotsView(seedThot))
 $: Containers = []
+
+function fetch_containers_data() {
+  return acontainers_data = writable(fetchContainers_indentedThotsView(seedThot))
+}
 
 /* const newContainer = () => {
   return {
@@ -14,21 +26,25 @@ $: Containers = []
   }
 } */
 
-function createBrotherContainer(index, i) {
+function createBrotherContainer(data, i) {
   alert("triggered")
+  let index = data.index
   let new_thot = default_thot
-  let new_container = default_container
+  //멍청아. 인덱스를 따로 부여해줄 필요가 없잖아. fetch하면서 알아서 생기는데.
+  /*let new_container = default_container
   let index2 = [...index] //deep copy first
   let former_part = index2.slice(0, -1) //index last digit ++
-  index2 = [...former_part, (index2[index2.length-1]+1)]
+  index2 = [...former_part, (index2[index2.length-1]+1)] 
   new_container.index = [...index2]
   console.log(new_container.index)
   new_container.thot = new_thot
-  $containers = [...$containers, new_container]
+  $containers_data = [...$containers_data, new_container]*/
   //containers.update(containers => containers.push(new_container))
+  let parent_index = [...index].pop()
+  let parent = $containers_data.find((data) => {return data.index === parent_index})
+  parent.thot.children = [...parent.thot.children, new_container.thot.id]
 
-
-  console.log($containers)
+  console.log($containers_data)
 
   //! need to update children data of the parent thot.
   //Why the hell can't I use "update"?
@@ -39,8 +55,8 @@ function createGhostContainer(index) {
   ghost.index = index
   ghost.root.classList.add('ghost')
 
-  containers.push(ghost)
-  containers = containers
+  containers_data.push(ghost)
+  containers_data = containers_data
   return ghost
 }
 
@@ -184,8 +200,11 @@ setContext('moveContainerFocus', moveContainerFocus)
 
 
 
-/* function foldContainerChildren(index) {
+/* function foldContainerChildren(children_indexes) {
   let children = Containers.filter(c => {return c.index.search(index)>0})
+  
+  let children = Containers.filter(c => {return children_indexes.includes(c.index)})
+  
   if (children) {
     children.style.display = "none" //토글도 해야되는데...
   }
@@ -199,8 +218,8 @@ setContext('foldContainerChildren', foldContainerChildren) */
 </script>
 
 <main id="Content">
-  {#each $containers as container, i}
-    <Container bind:this={Containers[i]} on:focus={focusContainer} {container} {i}/>
+  {#each $containers_data as data, i}
+    <Container bind:this={Containers[i]} on:focus={focusContainer} {data} {i}/>
     <!-- <Container bind:root={Containers[i]} {container}{i}/> -->
   {/each}
 </main>

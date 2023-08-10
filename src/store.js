@@ -2,31 +2,7 @@ import { writable, derived } from "svelte/store";
 
 //이 store.js 파일은 Head의 내용을 다루는 함수들을 모아넣는 "Head.js"로 바꾸고, Head의 내용은 각자 다른 ""Head 이름".json 파일에 담겨야 할 것이다.
 
-export const default_container = {
-  index: [],
-  thot: {id: 0, heading: '', content: '', children: []}
-}
-
-export let default_thot = {
-  id: 0,
-  heading: "Heading",
-  content: "Content",
-  children: [],
-  metadata: {
-    "Created date": null,
-    "Modified date": null,
-    History: null,
-  },
-  customMetadata: {},
-};
-
-const default_thot_customMetadata = {
-  Done: { icon: "checkbox", visual: [] },
-  "Logically sound": { icon: "checkbox", visual: [] },
-  Important: { icon: "!", visual: ["hilight"] },
-};
-
-let thisHead = {
+export let thisHead = {
   thots: [
     {
       id: 0,
@@ -44,11 +20,35 @@ let thisHead = {
   ],
 };
 
+export let default_thot = {
+  id: thisHead.thots.length, //나중엔 uuid 사용해서 id 부여 고려해보자
+  heading: "Heading",
+  content: "Content",
+  children: [],
+  metadata: {
+    "Created date": null,
+    "Modified date": null,
+    History: null,
+  },
+  customMetadata: {},
+};
+
+const default_thot_customMetadata = {
+  Done: { icon: "checkbox", visual: [] },
+  "Logically sound": { icon: "checkbox", visual: [] },
+  Important: { icon: "!", visual: ["hilight"] },
+};
+
+export const default_container = {
+  index: [],
+  thot: default_thot,
+};
+
 let seedThot = thisHead.thots[0];
 
 let max_find_repetition = 30; //한번에 찾을 thot들의 최대 개수
 
-function fetchContainers_indentedThotsView(seedThot) {
+export const fetchContainers_indentedThotsView = function (seedThot) {
   let find_repetition = 0;
   let result = [];
   let index = [0];
@@ -76,7 +76,7 @@ function fetchContainers_indentedThotsView(seedThot) {
   }
   handleThot(seedThot);
   return result;
-}
+};
 
 // 핵심!
 export let fetchedContainers = writable(
@@ -91,7 +91,6 @@ fetchedContainers = [
   }
 ]
 */
-
 
 /* 
 function addMetadata(thot, metadataName, metadata) {

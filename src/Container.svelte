@@ -8,10 +8,10 @@
     import {getContext} from 'svelte'
     import {createEventDispatcher} from 'svelte'
   //import children components
-   import MultilineTextarea from './lib/MultilineTextarea.svelte'
+    import MultilineTextarea from './lib/MultilineTextarea.svelte'
   
   //data to be given by the parent component
-    export let container;
+    export let data;
     export let i;
   //data to expose
     export let root;
@@ -22,8 +22,8 @@
       return array.join(".")
     }
   }
-  export let index = container.index
-  export let string_index = formatIndex(container.index) //이거 바꾸자. 이름을 string_index로. 
+  export let index = data.index
+  export let string_index = formatIndex(data.index) //이거 바꾸자. 이름을 string_index로. 
 
   //states of this container
   let foldContent = false
@@ -44,7 +44,7 @@
 
   //Indent self
   let indentSize = 20
-  let style = "margin-left:" + indentSize*container.index.length + "px;"
+  let style = "margin-left:" + indentSize*data.index.length + "px;"
   
 
   //Event handlers
@@ -54,7 +54,7 @@
     let keyevent = e.detail.keyevent
     if(keyevent.key === 'Enter' && keyevent.ctrlKey) { //ctrl + Enter
       //goto or create new Container, and focus on it 
-      createBrotherContainer(index, i) 
+      createBrotherContainer(data, i) 
     }
     if (keyevent.key.search("Arrow")>-1 && keyevent.ctrlKey) { //ctrl + arrow key
       //move focus
@@ -88,16 +88,16 @@
       <button type="button" class="dive">Dive</button>
       <button type="button" class="fold"
       bind:this={foldButton}
-      on:cilck={() => onFoldButtonClick()}>
+      on:click={() => onFoldButtonClick()}>
       {foldChildren ? 'unfold' : 'fold'}</button>
     </div>
     <div id="content">
       <span id="index">{string_index}</span>
       <div style="display:flex; flex-direction:column; width:100%;">
         <div id="heading"></div>
-        <MultilineTextarea placeholder={container.thot.heading} on:keydown={onTextareaKeydown}  on:focus={onTextareaFocus}/>
+        <MultilineTextarea placeholder={data.thot.heading} on:keydown={onTextareaKeydown}  on:focus={onTextareaFocus} bind:inputTextarea={contentTextarea}/>
         <div id="contentTextarea">
-          <MultilineTextarea placeholder={container.thot.content} on:keydown={onTextareaKeydown} on:focus={onTextareaFocus} bind:inputTextarea={contentTextarea}/>
+          <MultilineTextarea placeholder={data.thot.content} on:keydown={onTextareaKeydown} on:focus={onTextareaFocus} bind:inputTextarea={contentTextarea}/>
         </div>
       </div>
     </div>
