@@ -25,6 +25,12 @@ export let default_thot = {
   heading: "Heading",
   content: "Content",
   children: [],
+  /* relations: {
+      conclusions-reasons' '결론(요약)-자세한 근거들' : {
+      conclusions: [],
+      reasons: []
+    }
+  }, */
   metadata: {
     "Created date": null,
     "Modified date": null,
@@ -48,7 +54,11 @@ let seedThot = thisHead.thots[0];
 
 let max_find_repetition = 30; //한번에 찾을 thot들의 최대 개수
 
+let fetched_times = 0
+
 export const fetchContainers_indentedThotsView = function (seedThot) {
+  fetched_times++
+  console.log('fetching containers: '+fetched_times)
   let find_repetition = 0;
   let result = [];
   let index = [0];

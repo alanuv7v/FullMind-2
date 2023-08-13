@@ -10,7 +10,7 @@
   function onTextareaChange() {
     function resizeTextarea() {
       inputTextarea.style.height = "0px"
-      inputTextarea.style.height = (inputTextarea.scrollHeight) + "px"
+      inputTextarea.style.height = (inputTextarea.scrollHeight-8/* padding*2만큼 빼줘야 함 */) + "px"
       visibleTextarea.style.height = inputTextarea.style.height
       visibleTextarea.value = inputTextarea.value //높이 먼저 변한 후 value 변경됨
     }
@@ -20,7 +20,12 @@
   const dispatch = createEventDispatcher()
   
   function onTextareaKeydown(e) {
+    console.log('KEY DOWN: '+e.key)
     dispatch('keydown', {keyevent: e})
+  }
+  function onTextareaKeyUp(e) {
+    console.log('KEY UP: '+e.key)
+    dispatch('keyup', {keyevent: e})
   }
   function onTextareaFocus(e) {
     dispatch('focus')
@@ -32,9 +37,10 @@
   <textarea
     bind:this={inputTextarea}
     on:keydown={(e) => {onTextareaKeydown(e)}}
+    on:keyup={(e) => {onTextareaKeyUp(e)}}
     on:input={() => onTextareaChange()}
     on:focus={() => onTextareaFocus()}
-    id="inputTextarea" rows="1"
+    id="inputTextarea" rows="1" spellcheck="false"
     placeholder={placeholder}></textarea>
   <textarea
     bind:this={visibleTextarea}
@@ -56,7 +62,7 @@
     
     width: 100%;
     
-    padding: 0px;
+    padding: 4px;
     overflow-y: hidden;
     resize: none;
   }

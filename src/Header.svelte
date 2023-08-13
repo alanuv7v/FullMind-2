@@ -20,13 +20,13 @@
   }
   main {
     position: relative;
-    background-color: rgba(225, 225, 225, 1)
+    background-color: rgba(225, 225, 225, 1);
   }
   #tools {
     display: flex;
     flex-direction: row;
     width: fit-content;
-    height: fit-content;
+    height: fit-content;  
   }
   #title {
     position: absolute;
