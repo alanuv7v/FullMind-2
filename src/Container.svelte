@@ -195,7 +195,7 @@
     
     font-weight: 100;
     font-style: normal;
-    font-size: 18px;
+    font-size: 14px;
     
     position: relative;
     z-index: 2;

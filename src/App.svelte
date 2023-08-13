@@ -62,21 +62,18 @@ let Content_elem;
       <button>⮞</button>
     </div>
   </div>
-
   <Header />
   <IndentedThotsView bind:this={Content_elem}/>
-  <div>
-    <button on:click={()=>{}}>
-    font size up</button>
-    <button>font size down</button>
+  <div id='background'></div>
+  <div id='test'>
+    폰트 테스트
+    가나다라마바사 ABCDEFG
+    The quick brown fox jumps over the lazy dog
+    다람쥐 헌 쳇바퀴에 타고파
+    !@#$%^&*
+    asdfsaf
+    <div>{hi} / {hi2} / {hi3} / {hi4}</div>
   </div>
-  폰트 테스트
-  가나다라마바사 ABCDEFG
-  The quick brown fox jumps over the lazy dog
-  다람쥐 헌 쳇바퀴에 타고파
-  !@#$%^&*
-  asdfsaf
-  <div>{hi} / {hi2} / {hi3} / {hi4}</div>
   
   <!-- <div id="noise"></div> -->
   
@@ -84,14 +81,22 @@ let Content_elem;
 
 
 <style lang="stylus">
-  :global(button) {
+  @import "/themes/green_cozy/App"
+  /* :global(button) {
     border: 0px solid transparent;
     box-shadow: inset 1px 1px 2px 0px rgba(0,0,0,0.5);
   }
   #App {
     position: relative;
     height: fit-content;
+  }
+  #background {
+    position: fixed;
+    top: 0px;
+    width: 100vw;
+    height: 100vh;
     background-color: rgba(225, 245, 231, 1);
+    z-index: -1;
   }
   #overlay {
     position: absolute;
@@ -107,7 +112,7 @@ let Content_elem;
     display: flex;
     flex-direction: row;
     z-index: 4;
-  }
+  } */
   /* #noise {
     filter: contrast(170%);
     position: fixed;

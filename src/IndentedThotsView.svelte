@@ -1,7 +1,7 @@
 <script>
   import Container from "./Container.svelte"
   import { writable, derived } from "svelte/store";
-  import {thisHead, fetchedContainers, fetchContainers_indentedThotsView, default_thot, default_container} from "./store.js"
+  import {thisHead.thots, fetchedContainers, fetchContainers_indentedThotsView, default_thot, default_container} from "./store.js"
   import {setContext} from "svelte"
   /* import {thisHead} from "./App.svelte" */
   let seedThot = {
@@ -12,6 +12,67 @@
         metadata: {},
         customMetadata: {},
       }
+  
+  
+  let seedThot = thisHead.thots[0];
+
+let max_find_repetition = 30; //한번에 찾을 thot들의 최대 개수
+
+let fetched_times = 0
+
+export const fetchContainers = function (seedThot) {
+  fetched_times++
+  console.log('fetching containers: '+fetched_times)
+  
+  let find_repetition = 0;
+  let result = [];
+  let index = [0];
+
+  function handleThot(thot) {
+    find_repetition++;
+    index[index.length - 1]++;
+    let i = [...index]; //deep copy!
+    result = [...result, { index: i, thot: thot }];
+    if (thot.children.length > 0) {
+      //if thot.children exist
+      index.push(0);
+      for (let id of thot.children) {
+        //여기에 문제가? ...let을 안붙인 거였다. array 안 item에게. id가 정의가 안되있던것.
+        let child = thisHead.thots.find((thot) => thot.id === id);
+        if (find_repetition < max_find_repetition) {
+          handleThot(child);
+        } else {
+          break;
+        }
+      }
+    } else {
+      index.pop();
+    }
+  }
+  handleThot(seedThot);
+  return result; //list of container data
+};
+
+// 핵심!
+let fetchedContainers = writable(
+  fetchContainers(seedThot)
+);
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
   $: containers_data = writable(fetchContainers_indentedThotsView(seedThot))
   $: Containers = []
 
@@ -19,6 +80,20 @@
     return containers_data = writable(fetchContainers_indentedThotsView(seedThot))
   }
 
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
   /* const newContainer = () => {
     return {
       index ,
@@ -292,16 +367,15 @@
 </main>
 
 
-<style>
-  * {
+<style lang="stylus">
+  @import "/themes/green_cozy/IndentedThotsView"
+  /* * {
     box-sizing: border-box;
   }
   main {
     border: 8px solid lightgray;
     height: 800px;
-    /* background-color: #1242c7; */
     overflow: auto;
-
   }
   #inset {
     border: 8px inset lightgray;
@@ -310,7 +384,6 @@
     overflow: inherit;
   }
   :global(.focused) {
-    /* outline: 4px solid blue; */
     border-color: rgba(0, 20, 255, 0.4) !important;
     background-color: rgba(132, 176, 160, 0.38) !important;
   }
@@ -318,7 +391,6 @@
     transition: none !important;
     height: 0px !important;
     overflow: hidden !important;
-    /* outline: 4px solid skyblue; */
     border-color: skyblue !important;
-  }
+  } */
 </style>
