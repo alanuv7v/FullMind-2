@@ -1,19 +1,21 @@
 <svelte:options accessors />
 
 <script>
-  import {createEventDispatcher} from 'svelte'
+  import {createEventDispatcher, onMount} from 'svelte'
   
   export let inputTextarea;
   let visibleTextarea;
   export let placeholder;
+  export let color;
 
-  function onTextareaChange() {
-    function resizeTextarea() {
-      inputTextarea.style.height = "0px"
-      inputTextarea.style.height = (inputTextarea.scrollHeight-8/* padding*2만큼 빼줘야 함 */) + "px"
-      visibleTextarea.style.height = inputTextarea.style.height
-      visibleTextarea.value = inputTextarea.value //높이 먼저 변한 후 value 변경됨
-    }
+  function resizeTextarea() {
+    inputTextarea.style.height = "0px"
+    inputTextarea.style.height = (inputTextarea.scrollHeight) + "px"
+    visibleTextarea.style.height = inputTextarea.style.height
+    visibleTextarea.value = inputTextarea.value //높이 먼저 변한 후 value 변경됨
+  }
+
+  function onTextareaChange() {  
     resizeTextarea() 
   }
 
@@ -30,6 +32,26 @@
   function onTextareaFocus(e) {
     dispatch('focus')
   }
+
+  function setValues() {
+    
+    if (color) {
+      visibleTextarea.style.color = color;
+      inputTextarea.style.caretColor = color;
+      
+    }
+    else {
+      inputTextarea.style.caretColor = "DimGray";
+    }
+
+  }
+
+  onMount(
+    ()=>{
+      resizeTextarea();
+      setValues();
+    }
+  )
 
 </script>
 
@@ -49,6 +71,9 @@
 </div>
 
 <style>
+  * {
+    box-sizing: border-box; /* 중요 */
+  }
   #textareas {
     position:relative; /* 중요 */
     width: 100%;
@@ -65,8 +90,10 @@
     padding: 4px;
     overflow-y: hidden;
     resize: none;
+    
   }
   #visibleTextarea {
+    color: black;
     background-color: transparent;
     border:none;
   }
@@ -78,6 +105,7 @@
     z-index: 1;
     /* transition: none !important; */ /* 진짜 중요 */
     transition: border 0.5s ease;
+    caret-color: white;
   }
   #inputTextarea::selection {
     color: white;
