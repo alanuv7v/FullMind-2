@@ -107,6 +107,16 @@
     root.classList.remove('focused')
   }
   
+  function getValidRelations(relation) {
+    for (let extremes of relation.extremes) {
+     let idBindedExtremes = extremes.filter((e) => {return e.length > 0})
+    }
+    if (idBindedExtremes) {
+      return idBindedExtremes
+    }
+    
+  }
+  
 </script>
 
 <main bind:this={root}>
@@ -118,7 +128,7 @@
       on:click={() => onFoldButtonClick()}>
       {foldChildren ? 'unfold' : 'fold'}</button>
     </div>
-    <div id="content">
+    <div id="props">
       <span id="index">{string_index}</span>
       <div style="display:flex; flex-direction:column; width:100%;">
         <div id="heading">
@@ -127,6 +137,16 @@
         <div id="contentTextarea">
           <MultilineTextarea placeholder={data.thot.content} on:keydown={onTextareaKeydown} on:keyup={onTextareaKeyUp} on:focus={onTextareaFocus} bind:inputTextarea={contentTextarea}/>
         </div>
+      </div>
+      <div id="relations">relations:
+        <span>expand to: </span>
+        <button id="expand_to_left">L</button>
+        <button id="expand_to_right">R</button>
+        {#each data.thot.relations as relation, i}
+          <button on:click={expandRelationExtreme()}>
+            {data.thot.relation.keys(i)}
+          </button>
+        {/each}
       </div>
     </div>
   </div>
@@ -186,7 +206,7 @@
     border: 4px solid;
     border-color: transparent;
   }
-  #container {
+  #props {
     box-sizing: content-box;
 
 
@@ -275,6 +295,10 @@
     width: 100%;
     height: fit-content;
     margin-bottom: 4px;
+  }
+  div #relations {
+    display: flex;
+    flex-direction: rows;
   }
   /* textarea {
     background-color: transparent;

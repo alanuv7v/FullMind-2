@@ -20,6 +20,9 @@ import MultilineTextarea from './lib/MultilineTextarea.svelte'
 import Container from "./Container.svelte"
 import {getContext, onMount} from 'svelte'
 
+import * as glob from './themes/green_cozy/global_variables.json';
+
+
 let container = {
   index: [1,1,1],
   thot: {id: 5, heading: '3th', content: 'thot 1.1.1', children: []}
@@ -45,7 +48,7 @@ onMount(() => {
 
 //setInterval(() => alert(hi + "/" + hi2 + "/" + hi4), 10000);
 
-let Content_elem;
+let IndentedThotsView_elem;
 //const onCtrlShiftArrowKeydown = getContext('onCtrlShiftArrowKeydown')
 //const onCtrlShiftArrowKeydown = () => {onCtrlShiftArrowKeydown/*alert('ctrl shift arrow keydown')*/}
 
@@ -54,16 +57,23 @@ let Content_elem;
 
 <main id="App">
   <Fontfetcher />
-  <div id="overlay">
-    <div id="keyboard_toolbar" bind:this={keyboard_toolbar}>
-      <button>⮝</button>
-      <button on:click={() => {Content_elem.onCtrlShiftArrowKeydown('ArrowDown')}}>⮟</button>
-      <button>⮜</button>
-      <button>⮞</button>
-    </div>
+  <div id="keyboard_toolbar" bind:this={keyboard_toolbar}>
+    <button>⮝</button>
+    <button on:click={() => {IndentedThotsView_elem.onCtrlShiftArrowKeydown('ArrowDown')}}>⮟</button>
+    <button>⮜</button>
+    <button>⮞</button>
+  </div>
+  <div id="command_palette">
+    <MultilineTextarea
+    placeholder={
+    `command pallete...
+(search a thot by typing its heading / specific prop value / directory, modify settings, ect.)`
+    }
+    color={glob.light_green}
+    />
   </div>
   <Header />
-  <IndentedThotsView bind:this={Content_elem}/>
+  <IndentedThotsView bind:this={IndentedThotsView_elem}/>
   <div id='background'></div>
   <div id='test'>
     폰트 테스트

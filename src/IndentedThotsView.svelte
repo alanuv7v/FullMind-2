@@ -1,18 +1,20 @@
 <script>
   import Container from "./Container.svelte"
   import { writable, derived } from "svelte/store";
-  import {thisHead.thots, fetchedContainers, fetchContainers_indentedThotsView, default_thot, default_container} from "./store.js"
-  import {setContext} from "svelte"
+  import {thisHead} from "./heads/head_1.js"
+  import {default_thot, default_container_data} from "./default.js"
+  import {onMount, setContext} from "svelte"
   /* import {thisHead} from "./App.svelte" */
-  let seedThot = {
+  /*let seedThot = {
         id: 0,
         heading: "1st",
         content: "thot 1",
         children: [1, 4],
         metadata: {},
         customMetadata: {},
-      }
+      }*/
   
+  let fetchedContainers;
   
   let seedThot = thisHead.thots[0];
 
@@ -20,7 +22,7 @@ let max_find_repetition = 30; //한번에 찾을 thot들의 최대 개수
 
 let fetched_times = 0
 
-export const fetchContainers = function (seedThot) {
+const fetchContainers = function (seedThot) {
   fetched_times++
   console.log('fetching containers: '+fetched_times)
   
@@ -50,13 +52,11 @@ export const fetchContainers = function (seedThot) {
     }
   }
   handleThot(seedThot);
+  fetchedContainers = writable(result)
   return result; //list of container data
 };
 
-// 핵심!
-let fetchedContainers = writable(
-  fetchContainers(seedThot)
-);
+
   
   
   
@@ -65,22 +65,18 @@ let fetchedContainers = writable(
   
   
   
-  
-  
-  
-  
-  
-  
-  
-  
-  $: containers_data = writable(fetchContainers_indentedThotsView(seedThot))
+  /*
+  $: containers_data = writable(fetchContainers_indentedThotsView(seedThot))*/
   $: Containers = []
 
-  function fetch_containers_data() {
+  /*function fetch_containers_data() {
     return containers_data = writable(fetchContainers_indentedThotsView(seedThot))
   }
+  */
 
-  
+  onMount(
+    fetchContainers(seedThot)
+  )
   
   
   
@@ -105,18 +101,18 @@ let fetchedContainers = writable(
     let index = data.index
     let new_thot = JSON.parse(JSON.stringify(default_thot))
     //멍청아. 인덱스를 따로 부여해줄 필요가 없잖아. fetch하면서 알아서 생기는데.
-      /*let new_container = default_container
+      /*let new_container = default_container_data
       let index2 = [...index] //deep copy first
       let former_part = index2.slice(0, -1) //index last digit ++
       index2 = [...former_part, (index2[index2.length-1]+1)] 
       new_container.index = [...index2]
       console.log(new_container.index)
       new_container.thot = new_thot
-      $containers_data = [...$containers_data, new_container]*/
+      $fetchedContainers = [...$fetchedContainers, new_container]*/
       //containers.update(containers => containers.push(new_container))
 
     let parent_index = [...index].pop()
-    let parent = $containers_data.find((data) => {return data.index === parent_index})
+    let parent = $fetchedContainers.find((data) => {return data.index === parent_index})
     parent.thot.children = [...parent.thot.children, new_thot.id]
 
     //! need to update children data of the parent thot.
@@ -133,14 +129,14 @@ let fetchedContainers = writable(
       ghost.root.classList.remove('ghost')
     }
     
-    ghost_data = JSON.parse(JSON.stringify(default_container))
+    ghost_data = JSON.parse(JSON.stringify(default_container_data))
     
     ghost_data.index = JSON.parse(JSON.stringify(index))
     
     //let parentIndex = ghost.index.pop()
     // 부모 thot에 자식으로 ghost 등록
 
-    $containers_data = [...$containers_data, ghost_data]
+    $fetchedContainers = [...$fetchedContainers, ghost_data]
 
     ghost = Containers.find((c) => {return JSON.stringify(c.index) === JSON.stringify(ghost_data.index)}) //index 리스트들 간 동일성 체크. 즉 고스트 컨테이너와 같은 인덱스인 컨테이너 찾기.
 
@@ -181,7 +177,9 @@ let fetchedContainers = writable(
     focusedContainer = C
     C.focusSelf()
     //중앙에 그 컨테이너 오도록 스크롤값 고치기(IndentedThots 뷰의 경우, 패닝 대신)
-    C.contentTextarea.focus()
+    console.log(document.activeElement)
+    console.log(C.contentTextarea)
+    
   }
 
   function focusContainerAt(i) {
@@ -354,11 +352,11 @@ let fetchedContainers = writable(
 
 <main id="Content">
   <div id="inset">
-    {#each $containers_data as data, i}
+    {#each $fetchedContainers as data, i}
       <Container bind:this={Containers[i]} on:focus={focusContainer} {data} {i}/>
       <!-- <Container bind:root={Containers[i]} {container}{i}/> -->
     {/each}
-    <button on:click={()=>{console.log($containers_data)}}>log $containers_data</button>
+    <button on:click={()=>{console.log($fetchedContainers)}}>log $fetchedContainers</button>
     <button on:click={()=>{console.log(Containers)}}>log Containers</button>
     <button on:click={()=>{console.log(ghost)}}>log ghost</button>
     <button on:click={()=>{console.log(ghost_data)}}>log ghost_data</button>
