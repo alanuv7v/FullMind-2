@@ -15,9 +15,8 @@ https://armadillo-dev.github.io/ui/ux/benefit-and-cost-of-ui-component-framework
 import Fontfetcher from "./Fontfetcher.svelte"
 import Header from "./Header.svelte"
 import IndentedThotsView from "./IndentedThotsView.svelte"
-//import { onCtrlShiftArrowKeydown } from "./Content.svelte"
+//import PhamphletView from "./views/PhamphletView/PhamphletView.svelte"
 import MultilineTextarea from './lib/MultilineTextarea.svelte'
-import Container from "./Container.svelte"
 import {getContext, onMount} from 'svelte'
 
 import * as glob from './themes/green_cozy/global_variables.json';
@@ -49,8 +48,18 @@ onMount(() => {
 //setInterval(() => alert(hi + "/" + hi2 + "/" + hi4), 10000);
 
 let IndentedThotsView_elem;
-//const onCtrlShiftArrowKeydown = getContext('onCtrlShiftArrowKeydown')
-//const onCtrlShiftArrowKeydown = () => {onCtrlShiftArrowKeydown/*alert('ctrl shift arrow keydown')*/}
+let command_palette;
+
+window.onkeydown = function(e) {
+  if ((e.key === "p")&&(e.altKey)) {
+    if (command_palette.style.display === "none") {
+      command_palette.style.display = "inline-block"
+    }
+    else {
+      command_palette.style.display = "none"
+    }
+  }
+}
 
 </script>
 
@@ -63,7 +72,7 @@ let IndentedThotsView_elem;
     <button>⮜</button>
     <button>⮞</button>
   </div>
-  <div id="command_palette">
+  <div id="command_palette" bind:this={command_palette}>
     <MultilineTextarea
     placeholder={
     `command pallete...
@@ -73,7 +82,9 @@ let IndentedThotsView_elem;
     />
   </div>
   <Header />
-  <!--<IndentedThotsView bind:this={IndentedThotsView_elem}/>-->
+  <div id="content">
+    <IndentedThotsView bind:this={IndentedThotsView_elem}/>
+  </div>
   <div id='background'></div>
   <div id='test'>
     폰트 테스트

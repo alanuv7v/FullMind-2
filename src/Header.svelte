@@ -5,6 +5,9 @@
   <div id="title">FullMind.head*</div>
   <div id="tools">
     <button>heads...</button>
+    <button>Indented thots</button>
+    <button>Pamphlet view</button>
+    <button>Dive view</button>
   </div>
 </main>
 
@@ -20,17 +23,17 @@
   }
   main {
     position: relative;
-    background-color: rgba(225, 225, 225, 1);
   }
   #tools {
     display: flex;
     flex-direction: row;
-    width: fit-content;
+    width: 100%;
     height: fit-content;  
   }
   #title {
-    position: absolute;
-    top: 0px;
+    /* position: absolute;
+    top: 0px;*/ 
     width: 100%;
+    background-color: rgba(225, 225, 225, 1);
   }
 </style>

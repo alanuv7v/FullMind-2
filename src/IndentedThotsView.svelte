@@ -4,91 +4,54 @@
   import {thisHead} from "./heads/head_1.js"
   import {default_thot, default_container_data} from "./default.js"
   import {onMount, setContext} from "svelte"
-  /* import {thisHead} from "./App.svelte" */
-  /*let seedThot = {
-        id: 0,
-        heading: "1st",
-        content: "thot 1",
-        children: [1, 4],
-        metadata: {},
-        customMetadata: {},
-      }*/
-  
-  let fetchedContainers;
+
+  let fetchedContainers = writable()
   
   let seedThot = thisHead.thots[0];
 
-let max_find_repetition = 30; //한번에 찾을 thot들의 최대 개수
+  let max_find_repetition = 30; //한번에 찾을 thot들의 최대 개수
 
-let fetched_times = 0
+  let fetched_times = 0
 
-const fetchContainers = function (seedThot) {
-  fetched_times++
-  console.log('fetching containers: '+fetched_times)
-  
-  let find_repetition = 0;
-  let result = [];
-  let index = [0];
+  const fetchContainers = function (seedThot) {
+    fetched_times++
+    console.log('fetching containers: '+fetched_times)
+    
+    let find_repetition = 0;
+    let result = [];
+    let index = [0];
 
-  function handleThot(thot) {
-    find_repetition++;
-    index[index.length - 1]++;
-    let i = [...index]; //deep copy!
-    result = [...result, { index: i, thot: thot }];
-    if (thot.children.length > 0) {
-      //if thot.children exist
-      index.push(0);
-      for (let id of thot.children) {
-        //여기에 문제가? ...let을 안붙인 거였다. array 안 item에게. id가 정의가 안되있던것.
-        let child = thisHead.thots.find((thot) => thot.id === id);
-        if (find_repetition < max_find_repetition) {
-          handleThot(child);
-        } else {
-          break;
+    function handleThot(thot) {
+      find_repetition++;
+      index[index.length - 1]++;
+      let i = [...index]; //deep copy!
+      result = [...result, { index: i, thot: thot }];
+      if (thot.children.length > 0) {
+        //if thot.children exist
+        index.push(0);
+        for (let id of thot.children) {
+          //여기에 문제가? ...let을 안붙인 거였다. array 안 item에게. id가 정의가 안되있던것.
+          let child = thisHead.thots.find((thot) => thot.id === id);
+          if (find_repetition < max_find_repetition) {
+            handleThot(child);
+          } else {
+            break;
+          }
         }
+      } else {
+        index.pop();
       }
-    } else {
-      index.pop();
     }
-  }
-  handleThot(seedThot);
-  fetchedContainers = writable(result)
-  return result; //list of container data
-};
-
-
+    handleThot(seedThot);
+    fetchedContainers.update((c) => {return result})
+    return result; //list of container data
+  };
   
-  
-  
-  
-  
-  
-  
-  
-  /*
-  $: containers_data = writable(fetchContainers_indentedThotsView(seedThot))*/
   $: Containers = []
-
-  /*function fetch_containers_data() {
-    return containers_data = writable(fetchContainers_indentedThotsView(seedThot))
-  }
-  */
 
   onMount(
     fetchContainers(seedThot)
   )
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
   
   /* const newContainer = () => {
     return {
@@ -100,21 +63,11 @@ const fetchContainers = function (seedThot) {
   function createBrotherContainer(data, i) {
     let index = data.index
     let new_thot = JSON.parse(JSON.stringify(default_thot))
-    //멍청아. 인덱스를 따로 부여해줄 필요가 없잖아. fetch하면서 알아서 생기는데.
-      /*let new_container = default_container_data
-      let index2 = [...index] //deep copy first
-      let former_part = index2.slice(0, -1) //index last digit ++
-      index2 = [...former_part, (index2[index2.length-1]+1)] 
-      new_container.index = [...index2]
-      console.log(new_container.index)
-      new_container.thot = new_thot
-      $fetchedContainers = [...$fetchedContainers, new_container]*/
-      //containers.update(containers => containers.push(new_container))
 
     let parent_index = [...index].pop()
     let parent = $fetchedContainers.find((data) => {return data.index === parent_index})
     parent.thot.children = [...parent.thot.children, new_thot.id]
-
+    
     //! need to update children data of the parent thot.
     //Why the hell can't I use "update"?
   }
@@ -122,7 +75,6 @@ const fetchContainers = function (seedThot) {
   let ghost_data;
   let ghost;
   // 그렇다 전역변수다. 
-
   function createGhostContainer(index) {
     
     if (ghost) {
@@ -136,7 +88,7 @@ const fetchContainers = function (seedThot) {
     //let parentIndex = ghost.index.pop()
     // 부모 thot에 자식으로 ghost 등록
 
-    $fetchedContainers = [...$fetchedContainers, ghost_data]
+    fetchedContainers.update((c) => {return [...c, ghost_data]}) 
 
     ghost = Containers.find((c) => {return JSON.stringify(c.index) === JSON.stringify(ghost_data.index)}) //index 리스트들 간 동일성 체크. 즉 고스트 컨테이너와 같은 인덱스인 컨테이너 찾기.
 
@@ -352,6 +304,7 @@ const fetchContainers = function (seedThot) {
 
 <main id="Content">
   <div id="inset">
+    가로축 = "conclusion-reason"
     {#each $fetchedContainers as data, i}
       <Container bind:this={Containers[i]} on:focus={focusContainer} {data} {i}/>
       <!-- <Container bind:root={Containers[i]} {container}{i}/> -->
