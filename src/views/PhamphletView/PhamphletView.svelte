@@ -28,6 +28,6 @@ PhamphletView
     flex-direction: row;
   }
   .page {
-    width: 400px;
+    width: fit-content;
   }
 </style>

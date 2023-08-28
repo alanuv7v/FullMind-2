@@ -148,16 +148,16 @@
           <MultilineTextarea placeholder={data.thot.content} on:keydown={onTextareaKeydown} on:keyup={onTextareaKeyUp} on:focus={onTextareaFocus} bind:inputTextarea={contentTextarea}/>
         </div>
       </div>
-      <div bind:this={relationsPanel} id="relations" style="display:flex; flex-direction: column;">relations:
-        <!-- <span>expand to: </span>
-        <button id="expand_to_left">L</button>
-        <button id="expand_to_right">R</button> -->
-        {#each Object.keys(data.thot.relations) as relation, i}
-          <button on:click={expandRelationExtreme()}>
-            {relation}
-          </button>
-        {/each}
-      </div>
+    </div>
+    <div bind:this={relationsPanel} id="relations" style="display:flex; flex-direction: column; width: 400px;">relations:
+      <!-- <span>expand to: </span>
+      <button id="expand_to_left">L</button>
+      <button id="expand_to_right">R</button> -->
+      {#each Object.keys(data.thot.relations) as relation, i}
+        <button on:click={expandRelationExtreme()}>
+          {relation}
+        </button>
+      {/each}
     </div>
   </div>
   <button on:click={()=>{toggleRelationsPanel()}}>.</button>
@@ -204,6 +204,7 @@
     position: relative;
 
     display: flex;
+    flex-direction: row;
 
     /* height: 100px; */
     border: 4px solid;
@@ -214,6 +215,10 @@
   }
   main > button {
     height: auto;
+  }
+  #container {
+    display: flex;
+    flex-direction: row;
   }
   
   #root_second_border {
@@ -227,7 +232,7 @@
   }
   #props {
     box-sizing: content-box;
-
+    width: 400px;
 
     height: fit-content;
     display: flex;
