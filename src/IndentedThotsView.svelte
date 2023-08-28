@@ -302,46 +302,20 @@
 
 </script>
 
-<main id="Content">
-  <div id="inset">
-    가로축 = "conclusion-reason"
-    {#each $fetchedContainers as data, i}
-      <Container bind:this={Containers[i]} on:focus={focusContainer} {data} {i}/>
-      <!-- <Container bind:root={Containers[i]} {container}{i}/> -->
-    {/each}
-    <button on:click={()=>{console.log($fetchedContainers)}}>log $fetchedContainers</button>
-    <button on:click={()=>{console.log(Containers)}}>log Containers</button>
-    <button on:click={()=>{console.log(ghost)}}>log ghost</button>
-    <button on:click={()=>{console.log(ghost_data)}}>log ghost_data</button>
-    <button on:click={()=>{realizeGhost()}}>realize ghost</button>
-  </div>
+<main>
+  가로축 = "conclusion-reason"
+  {#each $fetchedContainers as data, i}
+    <Container bind:this={Containers[i]} on:focus={focusContainer} {data} {i}/>
+    <!-- <Container bind:root={Containers[i]} {container}{i}/> -->
+  {/each}
+  <button on:click={()=>{console.log($fetchedContainers)}}>log $fetchedContainers</button>
+  <button on:click={()=>{console.log(Containers)}}>log Containers</button>
+  <button on:click={()=>{console.log(ghost)}}>log ghost</button>
+  <button on:click={()=>{console.log(ghost_data)}}>log ghost_data</button>
+  <button on:click={()=>{realizeGhost()}}>realize ghost</button>
 </main>
 
 
 <style lang="stylus">
   @import "/themes/green_cozy/IndentedThotsView"
-  /* * {
-    box-sizing: border-box;
-  }
-  main {
-    border: 8px solid lightgray;
-    height: 800px;
-    overflow: auto;
-  }
-  #inset {
-    border: 8px inset lightgray;
-    height: 100%;
-    padding: 10px;
-    overflow: inherit;
-  }
-  :global(.focused) {
-    border-color: rgba(0, 20, 255, 0.4) !important;
-    background-color: rgba(132, 176, 160, 0.38) !important;
-  }
-  :global(.ghost) {
-    transition: none !important;
-    height: 0px !important;
-    overflow: hidden !important;
-    border-color: skyblue !important;
-  } */
 </style>

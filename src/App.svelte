@@ -104,37 +104,6 @@ window.onkeydown = function(e) {
 
 <style lang="stylus">
   @import "/themes/green_cozy/App"
-  /* :global(button) {
-    border: 0px solid transparent;
-    box-shadow: inset 1px 1px 2px 0px rgba(0,0,0,0.5);
-  }
-  #App {
-    position: relative;
-    height: fit-content;
-  }
-  #background {
-    position: fixed;
-    top: 0px;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(225, 245, 231, 1);
-    z-index: -1;
-  }
-  #overlay {
-    position: absolute;
-    top: 0px;
-    width: fit-content;
-    height: fit=content;
-  }
-  #keyboard_toolbar {
-    position: fixed;
-    background-color: gainsboro;
-    width: 100%;
-    height: 30px;
-    display: flex;
-    flex-direction: row;
-    z-index: 4;
-  } */
   /* #noise {
     filter: contrast(170%);
     position: fixed;
