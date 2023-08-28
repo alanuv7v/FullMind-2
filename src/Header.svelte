@@ -1,6 +1,8 @@
 <script>
 </script>
-
+<div style="color: red; font-size: 28px; background-color: yellow;">
+  커밋 안하면 다 날라가!!!!!!
+</div>
 <main>
   <div id="title">FullMind.head*</div>
   <div id="tools">

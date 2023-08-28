@@ -7,7 +7,7 @@
     create new ghostContainer, horizontalCursor under the focus-readyContainer */
     
 </script>
-
+PhamphletView
 <main>
   {#each pages as page, i}
     <div class='.page' style={"width:"+pageWidth}>
