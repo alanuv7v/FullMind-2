@@ -3,12 +3,16 @@ export const default_thot = {
   heading: "Heading",
   content: "Content",
   children: [],
-  /* relations: {
-      conclusions-reasons' '결론(요약)-자세한 근거들' : {
+  relations: {
+      'conclusions-reasons' : {
       conclusions: [],
       reasons: []
+    },
+    'poem-actuality' : {
+      poem: [],
+      actuality: []
     }
-  }, */
+  },
   metadata: {
     "Created date": null,
     "Modified date": null,

@@ -8,7 +8,7 @@
   import {getContext} from 'svelte'
     import {createEventDispatcher} from 'svelte'
   //import children components
-    import MultilineTextarea from './lib/MultilineTextarea.svelte'
+    import MultilineTextarea from '../../lib/MultilineTextarea.svelte'
   
   //data to be given by the parent component
     export let data;
@@ -107,7 +107,7 @@
     root.classList.remove('focused')
   }
   
-  function getValidRelations(relation) {
+  /* function getValidRelations(relation) {
     for (let extremes of relation.extremes) {
      let idBindedExtremes = extremes.filter((e) => {return e.length > 0})
     }
@@ -115,6 +115,10 @@
       return idBindedExtremes
     }
     
+  } */
+
+  function expandRelationExtreme() {
+    ;
   }
   
 </script>
@@ -122,11 +126,6 @@
 <main bind:this={root}>
   <div id="container" bind:this={container_elem} style={style}>
     <div id="options">
-      <button type="button" class="dive">Dive</button>
-      <button type="button" class="fold"
-      bind:this={foldButton}
-      on:click={() => onFoldButtonClick()}>
-      {foldChildren ? 'unfold' : 'fold'}</button>
     </div>
     <div id="props">
       <span id="index">{string_index}</span>
@@ -142,9 +141,9 @@
         <span>expand to: </span>
         <button id="expand_to_left">L</button>
         <button id="expand_to_right">R</button>
-        {#each data.thot.relations as relation, i}
+        {#each Object.keys(data.thot.relations) as relation, i}
           <button on:click={expandRelationExtreme()}>
-            {data.thot.relation.keys(i)}
+            {relation}
           </button>
         {/each}
       </div>
@@ -240,15 +239,15 @@
     /* background-color: #bdceff; */
   }
   #options {
-    display: flex;
+    /* display: flex;
     flex-direction: column;
     justify-content: space-evenly;
     width: 40px;
     margin-right: 4px;
 
-    font-size: 12px;
+    font-size: 12px; */
   }
-  #options > * {
+  /* #options > * {
     text-align: center;
     font-weight: 700;
   }
@@ -259,7 +258,7 @@
   #options button.fold {
     background-color: rgba(151, 200, 128, 1);
     color: black;
-  }
+  } */
 
   button {
     /* border: 1px inset rgba(52, 74, 70, 0.5); */

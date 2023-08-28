@@ -1,16 +1,22 @@
 <script>
-  const pages = [1]
+  import Container from './Container.svelte'
+  import { default_container_data } from '../../default';
+
+  const pages = [1,23]
   const pageWidth = "400px"
 
   /* on keydown(event)
   if (event.key == ctrl+shift+arrow):
     create new ghostContainer, horizontalCursor under the focus-readyContainer */
-    
+  
+  let data = default_container_data
+
 </script>
 PhamphletView
 <main>
   {#each pages as page, i}
-    <div class='.page' style={"width:"+pageWidth}>
+    <div class='page'>
+      <Container {data}/>
     </div> 
   {/each}
 </main>
@@ -22,5 +28,6 @@ PhamphletView
     flex-direction: row;
   }
   .page {
+    width: 400px;
   }
 </style>
