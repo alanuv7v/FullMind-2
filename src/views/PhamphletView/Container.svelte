@@ -5,8 +5,9 @@
 
 <script>
   //import modules
-  import {getContext} from 'svelte'
+    import {getContext} from 'svelte'
     import {createEventDispatcher} from 'svelte'
+    import Portal from "svelte-portal";
   //import children components
     import MultilineTextarea from '../../lib/MultilineTextarea.svelte'
   
@@ -29,6 +30,7 @@
   //states of this container
   let foldContent = false
   let foldChildren = false
+  let expandRelationToLeft = true
 
   //bind to variables: Children components of this container
   let foldButton;
@@ -138,6 +140,7 @@
   <div id="container" bind:this={container_elem} style={style}>
     <div id="options">
     </div>
+    <div id="leftRelationsPanelWrapper"></div>
     <div id="props">
       <span id="index">123</span>
       <div style="display:flex; flex-direction:column; width:100%;">
@@ -149,16 +152,19 @@
         </div>
       </div>
     </div>
-    <div bind:this={relationsPanel} id="relations" style="display:flex; flex-direction: column; width: 400px;">relations:
-      <!-- <span>expand to: </span>
-      <button id="expand_to_left">L</button>
-      <button id="expand_to_right">R</button> -->
-      {#each Object.keys(data.thot.relations) as relation, i}
-        <button on:click={expandRelationExtreme()}>
-          {relation}
-        </button>
-      {/each}
-    </div>
+    <div id="rightRelationsPanelWrapper"></div>
+    <Portal target="#leftRelationsPanelWrapper"><!-- CSS selector로 고르니까 이사단이 나지. 해당 id 가진 첫번쨰 element에게 몰빵하니까. 다른 portal 라이브러리 찾거나, {#if} 블록으로 해결하는 수밖에. -->
+      <div bind:this={relationsPanel} id="relations" style="display:flex; flex-direction: column; width: 400px;">relations:
+        <!-- <span>expand to: </span>
+        <button id="expand_to_left">L</button>
+        <button id="expand_to_right">R</button> -->
+        {#each Object.keys(data.thot.relations) as relation, i}
+          <button on:click={expandRelationExtreme()}>
+            {relation}
+          </button>
+        {/each}
+      </div>
+    </Portal>
   </div>
   <button on:click={()=>{toggleRelationsPanel()}}>.</button>
   <!-- <div id="root_second_border" bind:this={root_second_border}></div> -->
