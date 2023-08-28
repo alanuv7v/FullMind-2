@@ -138,18 +138,30 @@
           <MultilineTextarea placeholder={data.thot.content} on:keydown={onTextareaKeydown} on:keyup={onTextareaKeyUp} on:focus={onTextareaFocus} bind:inputTextarea={contentTextarea}/>
         </div>
       </div>
+      <div id="relations">relations:
+        <span>expand to: </span>
+        <button id="expand_to_left">L</button>
+        <button id="expand_to_right">R</button>
+        {#each data.thot.relations as relation, i}
+          <button on:click={expandRelationExtreme()}>
+            {data.thot.relation.keys(i)}
+          </button>
+        {/each}
+      </div>
     </div>
   </div>
   <!-- <div id="root_second_border" bind:this={root_second_border}></div> -->
 </main>
 
-<style lang="stylus">
+<style>
   /* :global로 적은건 아예 모든, 어떤 svelte 파일의 element든지 다 적용되니까 여기서는 쓰지 말고 *로 대체하자. 
   아예 글로벌하게 만들 스타일은 다른데에 적자.*/
   
   :global(*) {
     transition: all 0.5s ease;
   }
+  
+
   :global(div#content:hover) {
     border-color: rgba(240, 255, 239, 1) !important;
     /* background-color: #f5ead5; */
@@ -184,90 +196,71 @@
     border-color: transparent;
     transition: border-color 0.2s ease-out, background-color 0.5s ease-out, height 0.5s cubic-bezier(.49,.16,.2,.98);
     overflow: hidden;
-
-    #container {
-      display: flex
-      flex-direction: rows
-      
-      #options {
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        width: 44px;
-        margin-right: 4px;
-
-        font-size: 12px;
-        
-        > * {
-          text-align: center;
-          font-weight: 700;
-        }
-        button.dive {
-          background-color: rgba(52, 74, 70, 1);
-          color: white;
-        }
-        button.fold {
-          background-color: rgba(151, 200, 128, 1);
-          color: black;
-          }
-        button:hover {
-          font-size: @font-size*1.25
-        }
-      }
-      
-      #props {
-        width: 100%;
-        box-sizing: content-box;
-
-
-        height: fit-content;
-        display: flex;
-        
-        font-weight: 100;
-        font-style: normal;
-        font-size: 14px;
-        
-        position: relative;
-        z-index: 2;
-              
-        #index {
-          height: fit-content;
-          margin-right: 8px;
-          padding-left: 6px;
-          padding-right: 6px;
-          border-radius: 10px;
-          
-          box-shadow: inset 1px 1px 0px 0px rgba(0,0,0,0.5),
-          inset -1px -1px 0px 0px rgba(226, 247, 228, 1);
-        }
-        
-        #heading {
-          text-align: left;
-          width: 100%;
-          height: fit-content;
-          margin-bottom: 4px;
-        }
-        #content {
-          background-color: rgba(188, 230, 187, 1);
-          box-shadow: inset 1px 1px 4px -2px rgba(0,0,0,0.75);
-
-          border: 1px solid rgba(52, 74, 70, 0.56);
-          /* border: 1px solid #e0e0e0; */
-          
-          width: 100%;
-          height: fit-content;
-
-          display: flex;
-          align-items: stretch;
-          align-content: flex-start;
-
-          padding: 8px;
-
-          /* background-color: #bdceff; */
-        }
-      }
-    }
   }
+  #root_second_border {
+    position: absolute;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+
+    border: 4px solid;
+    border-color: transparent;
+  }
+  #props {
+    box-sizing: content-box;
+
+
+    height: fit-content;
+    display: flex;
+    
+    font-weight: 100;
+    font-style: normal;
+    font-size: 14px;
+    
+    position: relative;
+    z-index: 2;
+  }
+
+  #content {
+    background-color: rgba(188, 230, 187, 1);
+    box-shadow: inset 1px 1px 4px -2px rgba(0,0,0,0.75);
+
+    border: 1px solid rgba(52, 74, 70, 0.56);
+    /* border: 1px solid #e0e0e0; */
+    
+    width: 100%;
+    height: fit-content;
+
+    display: flex;
+    align-items: stretch;
+    align-content: flex-start;
+
+    padding: 8px;
+
+    /* background-color: #bdceff; */
+  }
+  #options {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    width: 40px;
+    margin-right: 4px;
+
+    font-size: 12px;
+  }
+  #options > * {
+    text-align: center;
+    font-weight: 700;
+  }
+  #options button.dive {
+    background-color: rgba(52, 74, 70, 1);
+    color: white;
+  }
+  #options button.fold {
+    background-color: rgba(151, 200, 128, 1);
+    color: black;
+  }
+
   button {
     /* border: 1px inset rgba(52, 74, 70, 0.5); */
     border-radius: 8px;
@@ -279,6 +272,7 @@
     background-color: white;
 
   }
+
   #contentTextarea {
     position:relative; /* 중요 */
     width: 100%;
@@ -286,4 +280,53 @@
     display: flex; /* 중요 */
   }
 
+  #index {
+    height: fit-content;
+    margin-right: 8px;
+    padding-left: 6px;
+    padding-right: 6px;
+    border-radius: 10px;
+    
+    box-shadow: inset 1px 1px 0px 0px rgba(0,0,0,0.5),
+    inset -1px -1px 0px 0px rgba(226, 247, 228, 1);
+  }
+  #heading {
+    text-align: left;
+    width: 100%;
+    height: fit-content;
+    margin-bottom: 4px;
+  }
+  div #relations {
+    display: flex;
+    flex-direction: rows;
+  }
+  /* textarea {
+    background-color: transparent;
+
+    border: 1px solid transparent;
+    font-size: inherit;
+    
+    width: 100%;
+    height: fit-content;
+    
+    padding: 0px;
+    overflow-y: hidden;
+    resize: none;
+  }
+  #visibleTextarea {
+    background-color: transparent;
+  }
+  #inputTextarea {
+    position:absolute;
+    
+    border: none;
+    color: transparent;
+    background-color: transparent;
+    z-index: 1;
+    
+  }
+  #inputTextarea::selection {
+    color: white;
+    background: #be9eff;
+  } */
 </style>

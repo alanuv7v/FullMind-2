@@ -1,11 +1,7 @@
 <style>
-/* 
-font-family: 'Noto Serif KR', serif;
-font-family: 'Jeju Myeongjo', serif;
-font-family: 'Nanum Myeongjo', serif; 
-font-family: 'Jost', sans-serif;
-font-family: 'Nanum Gothic Coding';
-*/
+/*   @import url('https://fonts.googleapis.com/css2?family=Jost:wght@500&display=swap');
+  @import url(//fonts.googleapis.com/earlyaccess/nanummyeongjo.css);
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@200;400;500;600;700&display=swap');
 
 @font-face {
   font-family: 'BookkMyungjo-Bd';
@@ -13,7 +9,7 @@ font-family: 'Nanum Gothic Coding';
     format('woff2');
   font-weight: 400;
   font-style: normal;
-}
+} */
 @font-face {
   font-family: 'HakgyoansimSantteutbatangL';
   src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2307-2@1.0/HakgyoansimSantteutbatangL.woff2')
@@ -22,6 +18,12 @@ font-family: 'Nanum Gothic Coding';
   font-style: normal;
 }
 @font-face {
+    font-family: 'HakgyoansimBareonbatangR';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2307-2@1.0/HakgyoansimBareonbatangR.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+}
+/* @font-face {
   font-family: 'SungDongMyungjo';
   font-style: normal;
   font-weight: 400;
@@ -44,26 +46,11 @@ font-family: 'Nanum Gothic Coding';
     format('woff');
   font-weight: normal;
   font-style: normal;
-}
-
-@import url('https://fonts.googleapis.com/css2?family=Jost:wght@500&display=swap'); /* Futura 맛 */
-
-@import url(//fonts.googleapis.com/earlyaccess/nanummyeongjo.css);
-@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@200;400;500;600;700&display=swap');
-
-
-:global(*) {
-  font-family: 'HakgyoansimSantteutbatangL';
-  font-weight: 400;
-  /* 제주명조는 !와 같은 특수문자가 오른쪽 공백이 커서 이상해짐. 유의할것 */
-}
-/* 
-font-family: 'Noto Serif KR', serif;
-font-family: 'Jeju Myeongjo', serif;
-font-family: 'Nanum Myeongjo', serif; 
-font-family: 'Jost', sans-serif;
-font-family: 'Nanum Gothic Coding';
-*/
+} */
+  :global(*) {
+    font-family: 'HakgyoansimBareonbatangR';
+    /* 제주명조는 !와 같은 특수문자가 오른쪽 공백이 커서 이상해짐. 유의할것 */
+  }
 </style>
 
 <script>
