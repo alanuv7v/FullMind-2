@@ -33,6 +33,7 @@
   //bind to variables: Children components of this container
   let foldButton;
   export let contentTextarea;
+  let relationsPanel;
 
   //getContext
   const createBrotherContainer = getContext('createBrotherContainer')
@@ -120,15 +121,25 @@
   function expandRelationExtreme() {
     ;
   }
+
+  function toggleRelationsPanel() {
+    if (relationsPanel.style.width === "0px") {
+      relationsPanel.style.width = "400px"
+    } 
+    else {
+      relationsPanel.style.width = "0px"
+    }
+  }
   
 </script>
 
 <main bind:this={root}>
+  <button on:click={()=>{toggleRelationsPanel()}}>.</button>
   <div id="container" bind:this={container_elem} style={style}>
     <div id="options">
     </div>
     <div id="props">
-      <span id="index">{string_index}</span>
+      <span id="index">123</span>
       <div style="display:flex; flex-direction:column; width:100%;">
         <div id="heading">
           <MultilineTextarea placeholder={data.thot.heading} on:keydown={onTextareaKeydown} on:keyup={onTextareaKeyUp} on:focus={onTextareaFocus}/>
@@ -137,7 +148,7 @@
           <MultilineTextarea placeholder={data.thot.content} on:keydown={onTextareaKeydown} on:keyup={onTextareaKeyUp} on:focus={onTextareaFocus} bind:inputTextarea={contentTextarea}/>
         </div>
       </div>
-      <div id="relations" style="display:flex; flex-direction: column;">relations:
+      <div bind:this={relationsPanel} id="relations" style="display:flex; flex-direction: column;">relations:
         <!-- <span>expand to: </span>
         <button id="expand_to_left">L</button>
         <button id="expand_to_right">R</button> -->
@@ -149,6 +160,7 @@
       </div>
     </div>
   </div>
+  <button on:click={()=>{toggleRelationsPanel()}}>.</button>
   <!-- <div id="root_second_border" bind:this={root_second_border}></div> -->
 </main>
 
@@ -190,6 +202,9 @@
 
   main {
     position: relative;
+
+    display: flex;
+
     /* height: 100px; */
     border: 4px solid;
     /* border-color: transparent; */
@@ -197,6 +212,10 @@
     transition: border-color 0.2s ease-out, background-color 0.5s ease-out, height 0.5s cubic-bezier(.49,.16,.2,.98);
     overflow: hidden;
   }
+  main > button {
+    height: auto;
+  }
+  
   #root_second_border {
     position: absolute;
     top: 0px;
