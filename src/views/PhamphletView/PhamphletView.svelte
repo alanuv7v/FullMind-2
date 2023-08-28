@@ -2,7 +2,7 @@
   import Container from './Container.svelte'
   import { default_container_data } from '../../default';
 
-  const pages = [1,23]
+  const pages = [1,2, 3]
   const pageWidth = "400px"
 
   /* on keydown(event)
@@ -23,7 +23,7 @@ PhamphletView
 
 
 <style>
-  .main {
+  main {
     display: flex;
     flex-direction: row;
   }

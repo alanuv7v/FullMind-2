@@ -137,10 +137,10 @@
           <MultilineTextarea placeholder={data.thot.content} on:keydown={onTextareaKeydown} on:keyup={onTextareaKeyUp} on:focus={onTextareaFocus} bind:inputTextarea={contentTextarea}/>
         </div>
       </div>
-      <div id="relations">relations:
-        <span>expand to: </span>
+      <div id="relations" style="display:flex; flex-direction: column;">relations:
+        <!-- <span>expand to: </span>
         <button id="expand_to_left">L</button>
-        <button id="expand_to_right">R</button>
+        <button id="expand_to_right">R</button> -->
         {#each Object.keys(data.thot.relations) as relation, i}
           <button on:click={expandRelationExtreme()}>
             {relation}
@@ -192,7 +192,8 @@
     position: relative;
     /* height: 100px; */
     border: 4px solid;
-    border-color: transparent;
+    /* border-color: transparent; */
+    border-color: black;
     transition: border-color 0.2s ease-out, background-color 0.5s ease-out, height 0.5s cubic-bezier(.49,.16,.2,.98);
     overflow: hidden;
   }
