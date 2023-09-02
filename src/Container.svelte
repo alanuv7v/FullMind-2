@@ -5,7 +5,7 @@
 
 <script>
   //import modules
-  import {getContext} from 'svelte'
+    import {getContext} from 'svelte'
     import {createEventDispatcher} from 'svelte'
   //import children components
     import MultilineTextarea from './lib/MultilineTextarea.svelte'
@@ -27,20 +27,20 @@
   export let string_index = formatIndex(data.index) //이거 바꾸자. 이름을 string_index로. 
 
   //states of this container
-  let foldContent = false
-  let foldChildren = false
+    let foldContent = false
+    let foldChildren = false
 
-  //bind to variables: Children components of this container
-  let foldButton;
-  export let contentTextarea;
+  //bind components to variables
+    let foldButton;
+    export let contentTextarea;
 
-  //getContext
-  const createBrotherContainer = getContext('createBrotherContainer')
-  const moveContainerFocus = getContext('moveContainerFocus')
-  const focusContainerAt = getContext('focusContainerAt')
-  const onCtrlShiftArrowKeydown = getContext('onCtrlShiftArrowKeydown')
-  const onCtrlShiftArrowKeyUp = getContext('onCtrlShiftArrowKeyUp')
-  const onArrowKeyUp = getContext('onArrowKeyUp')
+  //getContext 
+    const createBrotherContainer = getContext('createBrotherContainer')
+    const moveContainerFocus = getContext('moveContainerFocus')
+    const focusContainerAt = getContext('focusContainerAt')
+    const onCtrlShiftArrowKeydown = getContext('onCtrlShiftArrowKeydown')
+    const onCtrlShiftArrowKeyUp = getContext('onCtrlShiftArrowKeyUp')
+    const onArrowKeyUp = getContext('onArrowKeyUp')
 
   let createNewContainer = getContext('createNewContainer')
   let foldContainerChildren = getContext('foldContainerChildren')

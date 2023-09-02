@@ -5,8 +5,7 @@
 
 <script>
   //import modules
-    import {getContext} from 'svelte'
-    import {createEventDispatcher} from 'svelte'
+    import {getContext, onMount, createEventDispatcher} from 'svelte'
     import Portal from "svelte-portal";
   //import children components
     import MultilineTextarea from '../../lib/MultilineTextarea.svelte'
@@ -15,10 +14,6 @@
     export let data;
     export let i;
   //data to expose
-    export let root;
-    export let container_elem;
-
-  //variables to be used inside this component
   function formatIndex(array) {
     if (array) {
       return array.join(".")
@@ -27,81 +22,84 @@
   export let index = data.index
   export let string_index = formatIndex(data.index) //이거 바꾸자. 이름을 string_index로. 
 
-  //states of this container
-  let foldContent = false
-  let foldChildren = false
-  let expandRelationToLeft = true
+  //(initial) states of this container
+    let foldContent = false
+    let foldChildren = false
+    let expandRelationToLeft = true
+    let relationsPanelWidth = "200px"
 
-  //bind to variables: Children components of this container
-  let foldButton;
-  export let contentTextarea;
-  let relationsPanel;
+  //bind components to variables
+    let root
+    let container_elem
+    let foldButton
+    export let contentTextarea
+    let relationsPanel
+    let leftRelationsPanelWrapper
+    let rightRelationsPanelWrapper
 
   //getContext
-  const createBrotherContainer = getContext('createBrotherContainer')
-  const moveContainerFocus = getContext('moveContainerFocus')
-  const focusContainerAt = getContext('focusContainerAt')
-  const onCtrlShiftArrowKeydown = getContext('onCtrlShiftArrowKeydown')
-  const onCtrlShiftArrowKeyUp = getContext('onCtrlShiftArrowKeyUp')
-  const onArrowKeyUp = getContext('onArrowKeyUp')
+    const createBrotherContainer = getContext('createBrotherContainer')
+    const moveContainerFocus = getContext('moveContainerFocus')
+    const focusContainerAt = getContext('focusContainerAt')
+    const onCtrlShiftArrowKeydown = getContext('onCtrlShiftArrowKeydown')
+    const onCtrlShiftArrowKeyUp = getContext('onCtrlShiftArrowKeyUp')
+    const onArrowKeyUp = getContext('onArrowKeyUp')
 
-  let createNewContainer = getContext('createNewContainer')
-  let foldContainerChildren = getContext('foldContainerChildren')
- 
+    let createNewContainer = getContext('createNewContainer')
+    let foldContainerChildren = getContext('foldContainerChildren')
 
   //Indent self
-  let indentSize = 20
-  let style = "margin-left:" + indentSize*data.index.length + "px;"
+    let indentSize = 20
+    let style = "margin-left:" + indentSize*data.index.length + "px;"
   
 
   //Event handlers
+    let CtrlShiftArrowKeyDown = false
+    
+    //on keydown in textareas
+    function onTextareaKeydown(e) {
+      let keyevent = e.detail.keyevent
+      if(keyevent.key === 'Enter' && keyevent.ctrlKey) { //ctrl + Enter
+        //goto or create new Container, and focus on it 
+        createBrotherContainer(data, i) 
+      }
+      else if (keyevent.key.search("Arrow")>-1 && keyevent.ctrlKey && !keyevent.shiftKey) { //ctrl + arrow key
+        //move focus
+        moveContainerFocus(string_index, i, keyevent.key)
+      }
+      else if (keyevent.key.search("Arrow")>-1 && keyevent.ctrlKey && keyevent.shiftKey) { //ctrl + shift + arrow key
+        CtrlShiftArrowKeyDown = true
+        onCtrlShiftArrowKeydown(keyevent.key)
+      }
+    }
 
-  let CtrlShiftArrowKeyDown = false
-  
-  //on keydown in textareas
-  function onTextareaKeydown(e) {
-    let keyevent = e.detail.keyevent
-    if(keyevent.key === 'Enter' && keyevent.ctrlKey) { //ctrl + Enter
-      //goto or create new Container, and focus on it 
-      createBrotherContainer(data, i) 
+    function onTextareaKeyUp(e) {
+      let keyevent = e.detail.keyevent
+      if (CtrlShiftArrowKeyDown && (!(keyevent.ctrlKey)||!(keyevent.shiftKey))) { //ctrl, shift, arrow 전체가 다 up됬을때
+        onCtrlShiftArrowKeyUp(keyevent)
+        CtrlShiftArrowKeyDown = false
+      }
+      else if (CtrlShiftArrowKeyDown) {
+        onArrowKeyUp(keyevent)
+      }
     }
-    else if (keyevent.key.search("Arrow")>-1 && keyevent.ctrlKey && !keyevent.shiftKey) { //ctrl + arrow key
-      //move focus
-      moveContainerFocus(string_index, i, keyevent.key)
-    }
-    else if (keyevent.key.search("Arrow")>-1 && keyevent.ctrlKey && keyevent.shiftKey) { //ctrl + shift + arrow key
-      CtrlShiftArrowKeyDown = true
-      onCtrlShiftArrowKeydown(keyevent.key)
-    }
-  }
 
-  function onTextareaKeyUp(e) {
-    let keyevent = e.detail.keyevent
-    if (CtrlShiftArrowKeyDown && (!(keyevent.ctrlKey)||!(keyevent.shiftKey))) { //ctrl, shift, arrow 전체가 다 up됬을때
-      onCtrlShiftArrowKeyUp(keyevent)
-      CtrlShiftArrowKeyDown = false
+    function onTextareaFocus() {
+      focusContainerAt(i)
     }
-    else if (CtrlShiftArrowKeyDown) {
-      onArrowKeyUp(keyevent)
+
+    function onFoldButtonClick() {
+      /* function foldContainerChildren(index) {
+      }
+      foldContainerChildren(index) */
+      //이 컨테이너의 index(n.n.n 형식으로 된것) 스트링을 그대로, 이 컨테이너 아래 것들부터 검색해서 display:none으로 설정한 뒤, 이 컨테이너의 fold 버튼의 비주얼을 바꾸는 것(fold/unfold 글씨변경, 일단)이 제일 단순무식하나 최적일듯 하다. 
+      //foldChildren = !foldChildren
+      ;
     }
-  }
 
-  function onTextareaFocus() {
-    focusContainerAt(i)
-  }
-
-  function onFoldButtonClick() {
-    /* function foldContainerChildren(index) {
+    function onDiveButtonClick() {
+      ;
     }
-    foldContainerChildren(index) */
-    //이 컨테이너의 index(n.n.n 형식으로 된것) 스트링을 그대로, 이 컨테이너 아래 것들부터 검색해서 display:none으로 설정한 뒤, 이 컨테이너의 fold 버튼의 비주얼을 바꾸는 것(fold/unfold 글씨변경, 일단)이 제일 단순무식하나 최적일듯 하다. 
-    //foldChildren = !foldChildren
-    ;
-  }
-
-  function onDiveButtonClick() {
-    ;
-  }
 
   export function focusSelf() {
     root.classList.add('focused')
@@ -124,23 +122,60 @@
     ;
   }
 
-  function toggleRelationsPanel() {
-    if (relationsPanel.style.width === "0px") {
-      relationsPanel.style.width = "400px"
-    } 
-    else {
-      relationsPanel.style.width = "0px"
+  function toggleRelationsPanel(left) {
+    
+    function toggle(r) {
+      setTimeout(() => {
+        if (r.style.width != relationsPanelWidth) {
+          r.style.width = relationsPanelWidth
+        } 
+        else {
+          r.style.width = "0px"
+        }
+      }
+        , 1
+      )
+
+      
+    }
+    if (left) {
+      if (leftRelationsPanelWrapper.children[0]) {
+        toggle(leftRelationsPanelWrapper.children[0])
+      } else {
+        leftRelationsPanelWrapper.append(relationsPanel.cloneNode(true))
+        toggle(leftRelationsPanelWrapper.children[0])
+      }
+    } else {
+      if (rightRelationsPanelWrapper.children[0]) {
+        toggle(rightRelationsPanelWrapper.children[0])
+      } else {
+        rightRelationsPanelWrapper.append(relationsPanel.cloneNode(true))
+        toggle(rightRelationsPanelWrapper.children[0])
+      }
     }
   }
+
+  onMount(
+    () => { 
+      if (expandRelationToLeft) {
+        leftRelationsPanelWrapper.append(relationsPanel)
+      } else {
+        rightRelationsPanelWrapper.append(relationsPanel)
+      }
+    }
+  )
+
+ 
+
   
 </script>
 
 <main bind:this={root}>
-  <button on:click={()=>{toggleRelationsPanel()}}>.</button>
+  <button on:click={()=>{toggleRelationsPanel(true)}}>.</button>
   <div id="container" bind:this={container_elem} style={style}>
     <div id="options">
     </div>
-    <div id="leftRelationsPanelWrapper"></div>
+    <div bind:this={leftRelationsPanelWrapper}></div>
     <div id="props">
       <span id="index">123</span>
       <div style="display:flex; flex-direction:column; width:100%;">
@@ -152,21 +187,18 @@
         </div>
       </div>
     </div>
-    <div id="rightRelationsPanelWrapper"></div>
-    <Portal target="#leftRelationsPanelWrapper"><!-- CSS selector로 고르니까 이사단이 나지. 해당 id 가진 첫번쨰 element에게 몰빵하니까. 다른 portal 라이브러리 찾거나, {#if} 블록으로 해결하는 수밖에. -->
-      <div bind:this={relationsPanel} id="relations" style="display:flex; flex-direction: column; width: 400px;">relations:
-        <!-- <span>expand to: </span>
-        <button id="expand_to_left">L</button>
-        <button id="expand_to_right">R</button> -->
-        {#each Object.keys(data.thot.relations) as relation, i}
-          <button on:click={expandRelationExtreme()}>
-            {relation}
-          </button>
-        {/each}
-      </div>
-    </Portal>
+    <div bind:this={rightRelationsPanelWrapper}></div>
+    <div bind:this={relationsPanel} id="relations">relations:
+      <!-- <button id="expand_to_left">L</button>
+      <button id="expand_to_right">R</button> -->
+      {#each Object.keys(data.thot.relations) as relation, i}
+        <button on:click={expandRelationExtreme()}>
+          {relation}
+        </button>
+      {/each}
+    </div>
   </div>
-  <button on:click={()=>{toggleRelationsPanel()}}>.</button>
+  <button on:click={()=>{toggleRelationsPanel(false)}}>.</button>
   <!-- <div id="root_second_border" bind:this={root_second_border}></div> -->
 </main>
 
@@ -218,6 +250,8 @@
     border-color: black;
     transition: border-color 0.2s ease-out, background-color 0.5s ease-out, height 0.5s cubic-bezier(.49,.16,.2,.98);
     overflow: hidden;
+
+    font-size: 14px;
   }
   main > button {
     height: auto;
@@ -245,7 +279,6 @@
     
     font-weight: 100;
     font-style: normal;
-    font-size: 14px;
     
     position: relative;
     z-index: 2;
@@ -328,7 +361,10 @@
   }
   div #relations {
     display: flex;
-    flex-direction: rows;
+    flex-direction: column;
+    overflow: hidden;
+    width: 0px;
+    
   }
   /* textarea {
     background-color: transparent;
