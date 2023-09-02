@@ -118,8 +118,11 @@
     
   } */
 
-  function expandRelationExtreme() {
-    ;
+  function expandRelationExtreme(extreme) {
+    //fetch related thots that are close to the extreme
+    //get left or right section
+    //add one more page in pages var
+    //>>>
   }
 
   function toggleRelationsPanel(left) {
@@ -192,9 +195,16 @@
       <!-- <button id="expand_to_left">L</button>
       <button id="expand_to_right">R</button> -->
       {#each Object.keys(data.thot.relations) as relation, i}
-        <button on:click={expandRelationExtreme()}>
+        <!-- <button on:click={expandRelationExtreme()}>
           {relation}
-        </button>
+        </button> -->
+        <div style="display: flex; flex-direction: row;">
+          {#each Object.keys(data.thot.relations[relation]) as extreme}
+            <button on:click={expandRelationExtreme(extreme)} style="width: 100%">
+              {extreme}
+            </button>
+          {/each}
+        </div>
       {/each}
     </div>
   </div>
