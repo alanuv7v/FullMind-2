@@ -123,6 +123,7 @@
     //get left or right section
     //add one more page in pages var
     //>>>
+    alert("let's expand")
   }
 
   function toggleRelationsPanel(left) {
@@ -200,19 +201,24 @@
           {relation}
         </button> -->
         <div class="relation" style="display: flex; flex-direction: column;">
-          {#each Object.keys(data.thot.relations[relation]) as extreme}
-            <!-- <button on:click={expandRelationExtreme(extreme)} style="width: 100%">
+          <button class="dot-line-wrapper" on:click={expandRelationExtreme(data.thot.relations[relation][1])}>
+            <div class="target-extreme extreme">{Object.keys(data.thot.relations[relation])[1]}</div>
+            <button class="dot-line"></button>
+            <div class="source-extreme extreme">{Object.keys(data.thot.relations[relation])[0]}</div>
+          </button>
+          <button class="dot-line-wrapper">
+            <div class="target-extreme extreme">{Object.keys(data.thot.relations[relation])[0]}</div>
+            <button class="dot-line"></button>
+            <div class="source-extreme extreme">{Object.keys(data.thot.relations[relation])[1]}</div>
+          </button>
+          <!-- {#each Object.keys(data.thot.relations[relation]) as extreme}
+            <button on:click={expandRelationExtreme(extreme)} style="width: 100%">
               {extreme}
-            </button> -->
-            <!-- <svg height="6">
+            </button>
+            <svg height="6">
               <line x1="0" y1="0" x2="200" y2="0" style="stroke:rgb(0,0,0);stroke-width:6" />
-            </svg> -->
-            <div class="dot-line-wrapper">
-              <div class="target-extreme extreme" style="float: right;">{extreme}</div>
-              <div class="dot-line"></div>
-              <div class="source-extreme extreme" style="float: left;">{extreme}</div>
-            </div>
-          {/each}
+            </svg>
+          {/each} -->
         </div>
       {/each}
     </div>
@@ -222,7 +228,7 @@
 </main>
 <style lang="stylus">
   @import "../../themes/green_cozy/global_variables"
-  
+
   /* :global로 적은건 아예 모든, 어떤 svelte 파일의 element든지 다 적용되니까 여기서는 쓰지 말고 *로 대체하자. 
   아예 글로벌하게 만들 스타일은 다른데에 적자.*/
   
@@ -236,12 +242,12 @@
     /* background-color: #f5ead5; */
   }
   :global(button:hover, textarea:hover) {
-    border-color: rgba(52, 74, 70, 0.5) !important;
+    border-color: rgba(52, 74, 70, 0.5) /*!important*/;
     /* background-color: #f5ead5; */
   }
   :global(button:focus, button:focus-visible, textarea:focus, textarea:focus-visible) {
-    border-color: rgba(52, 74, 70, 0.5) !important;
-    outline: 1px solid rgba(52, 74, 70, 0.5) !important;
+    border-color: rgba(52, 74, 70, 0.5) /*!important*/;
+    outline: 1px solid rgba(52, 74, 70, 0.5) /*!important*/;
     box-shadow: 
       inset 1px 1px 1px 0px rgba(52, 74, 70, 0.5),
       inset 2px 2px 3px 0px rgba(52, 74, 70, 0.25);
@@ -394,6 +400,10 @@
     overflow: hidden;
     display: flex;
     flex-direction: column;
+
+    border: none;
+    background: none;
+    box-shadow: none;
   }
   div #relations:hover {
     border-color: gray;
@@ -406,7 +416,7 @@
     width: 200px; /* max width of dot-line */
   }
   div #relations .dot-line-wrapper:hover .dot-line{
-    background-color: blue; 
+    background-color: vivid_green; 
   }
   div #relations .target-extreme{
     margin-left: auto;
@@ -419,11 +429,19 @@
   div #relations .dot-line-wrapper:not(:hover) .extreme{
     color: transparent
   }
+  div #relations .dot-line-wrapper:not(:hover){
+    border-color: transparent;
+    outline-color: transparent;
+  }
   div #relations .dot-line {
     background-color: transparent; 
     width: 100%;
     height: 6px;
     border-radius: 100px;
+
+    border: none;
+    background: none;
+    box-shadow: none;
   }
   /* textarea {
     background-color: transparent;
