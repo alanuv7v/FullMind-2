@@ -21,6 +21,7 @@
   }
   export let index = data.index
   export let string_index = formatIndex(data.index) //이거 바꾸자. 이름을 string_index로. 
+  export let page_index = 0
 
   //(initial) states of this container
     let foldContent = false
@@ -198,7 +199,7 @@
           <button class="dot-line-wrapper" on:click={expandRelationExtreme(
               Object.values(data.thot.relations[relation][
                 Object.keys(data.thot.relations[relation])[1]]
-              )
+              ), page_index
             )}>
             <div class="target-extreme extreme">{Object.keys(data.thot.relations[relation])[1]}</div>
             <button class="dot-line"></button>

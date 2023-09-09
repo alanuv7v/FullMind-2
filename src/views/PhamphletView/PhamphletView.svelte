@@ -31,22 +31,20 @@
     //get left or right section
     //if needed, add one more page in pages var
     //>>>
-    alert(`let's expand`)
-    console.log(extreme_value)
-
-    let target_page_data
+    alert(source_page_index)
     let related_thots = []
     for (let id of extreme_value) {
       //related_thots.push(thisHead.thots[id]) 사실 이게 맞지만 지금은:
       related_thots.push(test_target_data)
     }
+    
+    let target_page_data = related_thots
     if (!pages_data[source_page_index+1]) { //if the target page does not exist yet:
-      target_page_data = []
-      pages_data.push(target_page_data)
+      pages_data.push(target_page_data) //pages_data가 변함에 따라 ui 자동 업데이트.
     } else {
       target_page_data = pages_data[source_page_index+1]
     }
-    target_page_data = related_thots
+    console.log(pages_data)
     
   }
   setContext('expandRelationExtreme', expandRelationExtreme)
@@ -57,7 +55,7 @@ PhamphletView
 <main>
   {#each pages_data as page_data, i}
     <div class='page'>
-    {#each page_data as container, i}
+    {#each page_data as data, i}
       <Container {data}/>
     {/each}
     </div> 
