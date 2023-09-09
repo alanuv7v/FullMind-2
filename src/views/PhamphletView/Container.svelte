@@ -220,8 +220,9 @@
   <!-- <button on:click={()=>{toggleRelationsPanel(false)}}>.</button> -->
   <!-- <div id="root_second_border" bind:this={root_second_border}></div> -->
 </main>
-
-<style>
+<style lang="stylus">
+  @import "../../themes/green_cozy/global_variables"
+  
   /* :global로 적은건 아예 모든, 어떤 svelte 파일의 element든지 다 적용되니까 여기서는 쓰지 말고 *로 대체하자. 
   아예 글로벌하게 만들 스타일은 다른데에 적자.*/
   
@@ -402,7 +403,10 @@
 
   }
   div #relations .dot-line-wrapper:hover{
-    width: 150px; /* max width of dot-line */
+    width: 200px; /* max width of dot-line */
+  }
+  div #relations .dot-line-wrapper:hover .dot-line{
+    background-color: blue; 
   }
   div #relations .target-extreme{
     margin-left: auto;
