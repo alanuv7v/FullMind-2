@@ -387,8 +387,15 @@
     height: 20px; 
     padding: 7px;
   }
-  div #relations .dot-line {
+  div #relations:hover .dot-line{
     background-color: gray; 
+
+  }
+  div #relations .dot-line-wrapper:hover{
+    width: 150px;
+  }
+  div #relations .dot-line {
+    background-color: transparent; 
     width: 100%;
     height: 100%;
     border-radius: 10px;
