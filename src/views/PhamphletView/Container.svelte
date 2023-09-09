@@ -6,7 +6,7 @@
 <script>
   //import modules
     import {getContext, onMount, createEventDispatcher} from 'svelte'
-    import Portal from "svelte-portal";
+    //import Portal from "svelte-portal";
   //import children components
     import MultilineTextarea from '../../lib/MultilineTextarea.svelte'
   
@@ -118,13 +118,7 @@
     
   } */
 
-  function expandRelationExtreme(extreme) {
-    //fetch related thots that are close to the extreme
-    //get left or right section
-    //add one more page in pages var
-    //>>>
-    alert("let's expand")
-  }
+  const expandRelationExtreme = getContext('expandRelationExtreme')
 
   function toggleRelationsPanel(left) {
     
@@ -206,7 +200,7 @@
             <button class="dot-line"></button>
             <div class="source-extreme extreme">{Object.keys(data.thot.relations[relation])[0]}</div>
           </button>
-          <button class="dot-line-wrapper">
+          <button class="dot-line-wrapper" on:click={expandRelationExtreme(data.thot.relations[relation][0])}>
             <div class="target-extreme extreme">{Object.keys(data.thot.relations[relation])[0]}</div>
             <button class="dot-line"></button>
             <div class="source-extreme extreme">{Object.keys(data.thot.relations[relation])[1]}</div>
@@ -248,6 +242,7 @@
   :global(button:focus, button:focus-visible, textarea:focus, textarea:focus-visible) {
     border-color: rgba(52, 74, 70, 0.5) /*!important*/;
     outline: 1px solid rgba(52, 74, 70, 0.5) /*!important*/;
+    
     box-shadow: 
       inset 1px 1px 1px 0px rgba(52, 74, 70, 0.5),
       inset 2px 2px 3px 0px rgba(52, 74, 70, 0.25);
@@ -430,8 +425,8 @@
     color: transparent
   }
   div #relations .dot-line-wrapper:not(:hover){
-    border-color: transparent;
-    outline-color: transparent;
+    border-color: transparent !important;
+    outline-color: transparent !important;
   }
   div #relations .dot-line {
     background-color: transparent; 

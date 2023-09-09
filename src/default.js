@@ -4,7 +4,7 @@ export const default_thot = {
   content: "Content",
   children: [],
   relations: {
-      'conclusions-reasons' : {
+    'conclusions-reasons' : {
       conclusions: [],
       reasons: []
     },
