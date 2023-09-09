@@ -195,12 +195,16 @@
           {relation}
         </button> -->
         <div class="relation" style="display: flex; flex-direction: column;">
-          <button class="dot-line-wrapper" on:click={expandRelationExtreme(data.thot.relations[relation][1])}>
+          <button class="dot-line-wrapper" on:click={expandRelationExtreme(
+              Object.values(data.thot.relations[relation][
+                Object.keys(data.thot.relations[relation])[1]]
+              )
+            )}>
             <div class="target-extreme extreme">{Object.keys(data.thot.relations[relation])[1]}</div>
             <button class="dot-line"></button>
             <div class="source-extreme extreme">{Object.keys(data.thot.relations[relation])[0]}</div>
           </button>
-          <button class="dot-line-wrapper" on:click={expandRelationExtreme(data.thot.relations[relation][0])}>
+          <button class="dot-line-wrapper">
             <div class="target-extreme extreme">{Object.keys(data.thot.relations[relation])[0]}</div>
             <button class="dot-line"></button>
             <div class="source-extreme extreme">{Object.keys(data.thot.relations[relation])[1]}</div>

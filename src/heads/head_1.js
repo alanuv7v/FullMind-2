@@ -20,36 +20,6 @@ export let thisHead = {
   ],
 };
 
-export let default_thot = {
-  id: thisHead.thots.length, //나중엔 uuid 사용해서 id 부여 고려해보자
-  heading: "Heading",
-  content: "Content",
-  children: [],
-  /* relations: {
-      conclusions-reasons' '결론(요약)-자세한 근거들' : {
-      conclusions: [],
-      reasons: []
-    }
-  }, */
-  metadata: {
-    "Created date": null,
-    "Modified date": null,
-    History: null,
-  },
-  customMetadata: {},
-};
-
-const default_thot_customMetadata = {
-  Done: { icon: "checkbox", visual: [] },
-  "Logically sound": { icon: "checkbox", visual: [] },
-  Important: { icon: "!", visual: ["hilight"] },
-};
-
-export const default_container = {
-  index: [],
-  thot: default_thot,
-};
-
 /*
 let seedThot = thisHead.thots[0];
 
