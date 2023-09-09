@@ -208,7 +208,9 @@
               <line x1="0" y1="0" x2="200" y2="0" style="stroke:rgb(0,0,0);stroke-width:6" />
             </svg> -->
             <div class="dot-line-wrapper">
+              <div class="target-extreme extreme" style="float: right;">{extreme}</div>
               <div class="dot-line"></div>
+              <div class="source-extreme extreme" style="float: left;">{extreme}</div>
             </div>
           {/each}
         </div>
@@ -381,24 +383,43 @@
     flex-direction: column;
     overflow: hidden;
     width: fit-content;
+    border: 1px solid transparent;
+    border-radius: 10px;
   }
   div #relations .dot-line-wrapper {
-    width: 20px;
-    height: 20px; 
-    padding: 7px;
+    width: 40px;
+    height: fit-content;/* 40px */; 
+    padding: 17px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  div #relations:hover {
+    border-color: gray;
   }
   div #relations:hover .dot-line{
     background-color: gray; 
 
   }
   div #relations .dot-line-wrapper:hover{
-    width: 150px;
+    width: 150px; /* max width of dot-line */
+  }
+  div #relations .target-extreme{
+    margin-left: auto;
+
+  }
+  div #relations .source-extreme{
+    margin-right: auto;
+    
+  }
+  div #relations .dot-line-wrapper:not(:hover) .extreme{
+    color: transparent
   }
   div #relations .dot-line {
     background-color: transparent; 
     width: 100%;
-    height: 100%;
-    border-radius: 10px;
+    height: 6px;
+    border-radius: 100px;
   }
   /* textarea {
     background-color: transparent;
