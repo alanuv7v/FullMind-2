@@ -159,12 +159,13 @@
   }
 
   onMount(
-    () => { 
+    () => { /* 
       if (expandRelationToLeft) {
         leftRelationsPanelWrapper.append(relationsPanel)
       } else {
         rightRelationsPanelWrapper.append(relationsPanel)
-      }
+      } */
+      leftRelationsPanelWrapper.append(relationsPanel.cloneNode())
     }
   )
 
@@ -198,7 +199,7 @@
         <!-- <button on:click={expandRelationExtreme()}>
           {relation}
         </button> -->
-        <div style="display: flex; flex-direction: column;">
+        <div class="relation" style="display: flex; flex-direction: column;">
           {#each Object.keys(data.thot.relations[relation]) as extreme}
             <!-- <button on:click={expandRelationExtreme(extreme)} style="width: 100%">
               {extreme}
@@ -206,7 +207,9 @@
             <!-- <svg height="6">
               <line x1="0" y1="0" x2="200" y2="0" style="stroke:rgb(0,0,0);stroke-width:6" />
             </svg> -->
-            <div style="border-radius: 10px; background-color: gray; width: 6px; height: 6px; margin-bottom: 10px;"></div>
+            <div class="dot-line-wrapper">
+              <div class="dot-line"></div>
+            </div>
           {/each}
         </div>
       {/each}
@@ -377,8 +380,18 @@
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    width: 0px;
-    
+    width: fit-content;
+  }
+  div #relations .dot-line-wrapper {
+    width: 20px;
+    height: 20px; 
+    padding: 7px;
+  }
+  div #relations .dot-line {
+    background-color: gray; 
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
   }
   /* textarea {
     background-color: transparent;
