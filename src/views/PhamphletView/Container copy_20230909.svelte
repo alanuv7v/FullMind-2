@@ -26,7 +26,7 @@
     let foldContent = false
     let foldChildren = false
     let expandRelationToLeft = true
-    let relationsPanelWidth = "fit-content"/* "200px" */
+    let relationsPanelWidth = "200px"
 
   //bind components to variables
     let root
@@ -174,7 +174,7 @@
 </script>
 
 <main bind:this={root}>
-  <!-- <button on:click={()=>{toggleRelationsPanel(true)}}>.</button> -->
+  <button on:click={()=>{toggleRelationsPanel(true)}}>.</button>
   <div id="container" bind:this={container_elem} style={style}>
     <div id="options">
     </div>
@@ -191,7 +191,7 @@
       </div>
     </div>
     <div bind:this={rightRelationsPanelWrapper}></div>
-    <div bind:this={relationsPanel} id="relations"><!-- relations: -->
+    <div bind:this={relationsPanel} id="relations">relations:
       <!-- <button id="expand_to_left">L</button>
       <button id="expand_to_right">R</button> -->
       {#each Object.keys(data.thot.relations) as relation, i}
@@ -203,16 +203,15 @@
             <!-- <button on:click={expandRelationExtreme(extreme)} style="width: 100%">
               {extreme}
             </button> -->
-            <!-- <svg height="6">
-              <line x1="0" y1="0" x2="200" y2="0" style="stroke:rgb(0,0,0);stroke-width:6" />
-            </svg> -->
-            <div style="border-radius: 10px; background-color: gray; width: 6px; height: 6px; margin-bottom: 10px;"></div>
+            <svg height="210" width="500">
+              <line x1="0" y1="0" x2="200" y2="200" style="stroke:rgb(255,0,0);stroke-width:2" />
+            </svg>
           {/each}
         </div>
       {/each}
     </div>
   </div>
-  <!-- <button on:click={()=>{toggleRelationsPanel(false)}}>.</button> -->
+  <button on:click={()=>{toggleRelationsPanel(false)}}>.</button>
   <!-- <div id="root_second_border" bind:this={root_second_border}></div> -->
 </main>
 
