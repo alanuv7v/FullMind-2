@@ -26,12 +26,13 @@
     create new ghostContainer, horizontalCursor under the focus-readyContainer */
   
 
-  function expandRelationExtreme(extreme_value, source_page_index) {
+  function expandRelationExtreme(e/* extreme_value, source_page_index */) {
+    console.log(e.detail)
     //fetch related thots that are close to the extreme
     //get left or right section
     //if needed, add one more page in pages var
     //>>>
-    alert(source_page_index)
+    /* alert(source_page_index)
     let related_thots = []
     for (let id of extreme_value) {
       //related_thots.push(thisHead.thots[id]) 사실 이게 맞지만 지금은:
@@ -44,7 +45,7 @@
     } else {
       target_page_data = pages_data[source_page_index+1]
     }
-    console.log(pages_data)
+    console.log(pages_data) */
     
   }
   setContext('expandRelationExtreme', expandRelationExtreme)
@@ -56,7 +57,7 @@ PhamphletView
   {#each pages_data as page_data, i}
     <div class='page'>
     {#each page_data as data, i}
-      <Container {data}/>
+      <Container {data} on:expandRelationExtreme={expandRelationExtreme}/>
     {/each}
     </div> 
   {/each}

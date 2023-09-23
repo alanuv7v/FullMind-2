@@ -9,6 +9,7 @@
     //import Portal from "svelte-portal";
   //import children components
     import MultilineTextarea from '../../lib/MultilineTextarea.svelte'
+    import RelationExtreme from './RelationExtreme.svelte';
   
   //data to be given by the parent component
     export let data;
@@ -196,6 +197,13 @@
           {relation}
         </button> -->
         <div class="relation" style="display: flex; flex-direction: column;">
+          <RelationExtreme 
+          targetExtreme={Object.keys(data.thot.relations[relation])[1]} 
+          sourceExtreme={Object.keys(data.thot.relations[relation])[0]}
+          page_index={page_index}
+          on:expandRelationExtreme/>
+
+
           <button class="dot-line-wrapper" on:click={expandRelationExtreme(
               Object.values(data.thot.relations[relation][
                 Object.keys(data.thot.relations[relation])[1]]

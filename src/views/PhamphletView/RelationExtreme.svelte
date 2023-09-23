@@ -1,18 +1,18 @@
-<button class="dot-line-wrapper" on:click={expandRelationExtreme(
-    Object.values(data.thot.relations[relation][
-      Object.keys(data.thot.relations[relation])[1]]
-    ), page_index
-  )}>
-  <div class="target-extreme extreme">{Object.keys(data.thot.relations[relation])[1]}</div>
+<script>
+  import {createEventDispatcher} from "svelte"
+  export let targetExtreme, sourceExtreme, page_index
+  const dispatch = createEventDispatcher()
+
+</script>
+
+<button class="dot-line-wrapper" on:click={() => {dispatch("expandRelationExtreme", targetExtreme)}}>
+  <div class="target-extreme extreme">{targetExtreme}</div>
   <button class="dot-line"></button>
-  <div class="source-extreme extreme">{Object.keys(data.thot.relations[relation])[0]}</div>
+  <div class="source-extreme extreme">{sourceExtreme}</div>
 </button>
 
-
-
-
-
-<style>
+<style lang="stylus">
+@import "../../themes/green_cozy/global_variables"
 .dot-line-wrapper {
   width: 40px;
   height: fit-content;
