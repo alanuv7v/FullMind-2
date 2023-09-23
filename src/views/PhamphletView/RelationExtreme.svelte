@@ -17,12 +17,10 @@
     transition: all 0.5s ease;
   }
 .dot-line-wrapper {
-  overflow: visible;
   width: 100%;
   
   height: 100%;
-  padding: 17px;
-  overflow: hidden;
+  padding: 15px;
   display: flex;
   flex-direction: column;
   border: none;
