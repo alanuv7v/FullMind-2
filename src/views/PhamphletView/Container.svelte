@@ -392,56 +392,51 @@
     width: fit-content;
     border: 1px solid transparent;
     border-radius: 10px;
-  }
-  div #relations .dot-line-wrapper {
-    width: 40px;
-    height: fit-content;/* 40px */; 
-    padding: 17px;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-
-    border: none;
-    background: none;
-    box-shadow: none;
-  }
-  div #relations:hover {
-    border-color: gray;
-  }
-  div #relations:hover .dot-line{
-    background-color: gray; 
-
-  }
-  div #relations .dot-line-wrapper:hover{
-    width: 200px; /* max width of dot-line */
-  }
-  div #relations .dot-line-wrapper:hover .dot-line{
-    background-color: vivid_green; 
-  }
-  div #relations .target-extreme{
-    margin-left: auto;
-
-  }
-  div #relations .source-extreme{
-    margin-right: auto;
-    
-  }
-  div #relations .dot-line-wrapper:not(:hover) .extreme{
-    color: transparent
-  }
-  div #relations .dot-line-wrapper:not(:hover){
-    border-color: transparent !important;
-    outline-color: transparent !important;
-  }
-  div #relations .dot-line {
-    background-color: transparent; 
-    width: 100%;
-    height: 6px;
-    border-radius: 100px;
-
-    border: none;
-    background: none;
-    box-shadow: none;
+    .dot-line-wrapper {
+      width: 40px;
+      height: fit-content;
+      padding: 17px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      border: none;
+      background: none;
+      box-shadow: none;
+      &:hover {
+        width: 200px;
+        .dot-line {
+          background-color: vivid_green;
+        }
+      }
+      &:not(:hover) {
+        border-color: transparent !important;
+        outline-color: transparent !important;
+        .extreme {
+          color: transparent;
+        }
+      }
+    }
+    &:hover {
+      border-color: gray;
+      .dot-line {
+        background-color: gray;
+      }
+    }
+    .target-extreme {
+      margin-left: auto;
+    }
+    .source-extreme {
+      margin-right: auto;
+    }
+    .dot-line {
+      background-color: transparent;
+      width: 100%;
+      height: 6px;
+      border-radius: 100px;
+      border: none;
+      background: none;
+      box-shadow: none;
+    }
   }
   /* textarea {
     background-color: transparent;
