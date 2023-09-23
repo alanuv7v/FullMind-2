@@ -13,9 +13,14 @@
 
 <style lang="stylus">
 @import "../../themes/green_cozy/global_variables"
+  * {
+    transition: all 0.5s ease;
+  }
 .dot-line-wrapper {
-  width: 40px;
-  height: fit-content;
+  overflow: visible;
+  width: 100%;
+  
+  height: 100%;
   padding: 17px;
   overflow: hidden;
   display: flex;
@@ -23,6 +28,7 @@
   border: none;
   background: none;
   box-shadow: none;
+
   &:hover {
     width: 200px;
     .dot-line {

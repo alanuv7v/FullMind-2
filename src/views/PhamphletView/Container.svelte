@@ -263,17 +263,22 @@
   }
 
   main {
+    padding: 10px;
+    margin: 10px;
+    border-radius: 10px;
+
     position: relative;
 
     display: flex;
     flex-direction: row;
 
+    overflow: visible;
+
     /* height: 100px; */
-    border: 4px solid;
+    border: 1px solid gray;
     /* border-color: transparent; */
     border-color: black;
     transition: border-color 0.2s ease-out, background-color 0.5s ease-out, height 0.5s cubic-bezier(.49,.16,.2,.98);
-    overflow: hidden;
 
     font-size: 14px;
   }
@@ -384,58 +389,21 @@
     margin-bottom: 4px;
   }
   div #relations {
+    overflow: visible;
     display: flex;
     flex-direction: column;
-    overflow: hidden;
-    width: fit-content;
+    overflow: visible;
+    width: 40px;
     border: 1px solid transparent;
     border-radius: 10px;
-    .dot-line-wrapper {
-      position: absolute;
-      width: 40px;
-      height: fit-content;
-      padding: 17px;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      border: none;
-      background: none;
-      box-shadow: none;
-      &:hover {
-        width: 200px;
-        .dot-line {
-          background-color: vivid_green;
-        }
-      }
-      &:not(:hover) {
-        border-color: transparent !important;
-        outline-color: transparent !important;
-        .extreme {
-          color: transparent;
-        }
-      }
-    }
+    
     &:hover {
       border-color: gray;
       .dot-line {
         background-color: gray;
       }
     }
-    .target-extreme {
-      margin-left: auto;
-    }
-    .source-extreme {
-      margin-right: auto;
-    }
-    .dot-line {
-      background-color: transparent;
-      width: 100%;
-      height: 6px;
-      border-radius: 100px;
-      border: none;
-      background: none;
-      box-shadow: none;
-    }
+    
   }
   /* textarea {
     background-color: transparent;
