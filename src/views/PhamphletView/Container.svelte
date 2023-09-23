@@ -123,7 +123,6 @@
     
   } */
 
-  const expandRelationExtreme = getContext('expandRelationExtreme')
 
   function toggleRelationsPanel(left) {
     
@@ -169,9 +168,10 @@
     }
   )
 
-  const getPageDividerPos = getContext('getPageDividerPos')
-  getPageDividerPos(i)
+  export let linePos
 
+  $: console.log($linePos)
+  
  
 
   
@@ -203,14 +203,18 @@
           {relation}
         </button> -->
         <div class="relation" style="display: flex; flex-direction: column;">
+
           <RelationExtreme 
           targetExtreme={Object.keys(data.thot.relations[relation])[1]} 
           sourceExtreme={Object.keys(data.thot.relations[relation])[0]}
           page_index={page_index}
+          linePos={linePos}
           on:expandRelationExtreme={(e)=>{console.log(e); dispatch(
             "expandRelationExtreme", 
             {extreme_values: Object.values(data.thot.relations[relation][e.detail]), 
-            page_index: page_index}) }}/>
+            page_index: page_index}) }}
+          />
+
           <RelationExtreme 
           targetExtreme={Object.keys(data.thot.relations[relation])[0]} 
           sourceExtreme={Object.keys(data.thot.relations[relation])[1]}
@@ -219,6 +223,7 @@
             "expandRelationExtreme", 
             {extreme_values: Object.values(data.thot.relations[relation][e.detail]), 
             page_index: page_index}) }}/>
+
         </div>
       {/each}
     </div>

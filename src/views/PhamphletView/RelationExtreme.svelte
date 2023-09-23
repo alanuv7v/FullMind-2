@@ -3,9 +3,16 @@
   export let targetExtreme, sourceExtreme, page_index
   const dispatch = createEventDispatcher()
 
+  export let linePos
+  let wrapper
+
 </script>
 
-<button class="dot-line-wrapper" on:click={() => {dispatch("expandRelationExtreme", targetExtreme)}}>
+<button class="dot-line-wrapper" 
+bind:this={wrapper}
+on:click={() => {dispatch("expandRelationExtreme", targetExtreme)}}
+on:mouseenter={()=>{wrapper.style.width='400px'}}
+on:mouseleave={()=>{wrapper.style.width='100%'}}>
   <div class="target-extreme extreme">{targetExtreme}</div>
   <button class="dot-line"></button>
   <div class="source-extreme extreme">{sourceExtreme}</div>
@@ -28,7 +35,7 @@
   box-shadow: none;
 
   &:hover {
-    width: 200px;
+    /*width: 200px;*/
     .dot-line {
       background-color: vivid_green;
     }

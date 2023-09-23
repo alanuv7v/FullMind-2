@@ -1,6 +1,8 @@
 <script>
   import { writable, derived } from "svelte/store";
   import Container from './Container.svelte'
+  import Page from "./Page.svelte";
+
   import { default_container_data } from '../../default';
   import {setContext} from "svelte"
   import {thisHead} from "../../heads/head_1"
@@ -87,14 +89,15 @@
 PhamphletView
 <main>
   {#each $pages_data as page_data, i}
-    <div class='page'>
+   <Page data={data} page_data={page_data}/>
+    <!-- <div class='page'>
       {#each page_data as data, i}
         <Container {data} 
         bind:this={Containers[i]} 
         on:expandRelationExtreme={expandRelationExtreme}/>
       {/each}
     </div> 
-    <div id="line" bind:this={lines[i]}></div>
+    <div id="line" bind:this={lines[i]}></div> -->
   {/each}
 </main>
 
