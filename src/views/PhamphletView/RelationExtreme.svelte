@@ -35,6 +35,9 @@
     .extreme {
       color: transparent;
     }
+    .dot-line {
+      background-color: gray;
+    }
   }
 }
 &:hover {
@@ -57,5 +60,6 @@
   border: none;
   background: none;
   box-shadow: none;
+  
 }
 </style>

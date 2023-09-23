@@ -10,19 +10,22 @@
   //import children components
     import MultilineTextarea from '../../lib/MultilineTextarea.svelte'
     import RelationExtreme from './RelationExtreme.svelte';
+
+  const dispatch = createEventDispatcher()
   
   //data to be given by the parent component
     export let data;
     export let i;
+    export let page_index = 0
   //data to expose
   function formatIndex(array) {
     if (array) {
       return array.join(".")
     }
   }
-  export let index = data.index
-  export let string_index = formatIndex(data.index) //이거 바꾸자. 이름을 string_index로. 
-  export let page_index = 0
+
+  let index = data.index
+  let string_index = formatIndex(data.index) //이거 바꾸자. 이름을 string_index로. 
 
   //(initial) states of this container
     let foldContent = false
@@ -87,7 +90,7 @@
     }
 
     function onTextareaFocus() {
-      focusContainerAt(i)
+      focusContainerAt(page_index, i)
     }
 
     function onFoldButtonClick() {
@@ -201,31 +204,18 @@
           targetExtreme={Object.keys(data.thot.relations[relation])[1]} 
           sourceExtreme={Object.keys(data.thot.relations[relation])[0]}
           page_index={page_index}
-          on:expandRelationExtreme/>
-
-
-          <button class="dot-line-wrapper" on:click={expandRelationExtreme(
-              Object.values(data.thot.relations[relation][
-                Object.keys(data.thot.relations[relation])[1]]
-              ), page_index
-            )}>
-            <div class="target-extreme extreme">{Object.keys(data.thot.relations[relation])[1]}</div>
-            <button class="dot-line"></button>
-            <div class="source-extreme extreme">{Object.keys(data.thot.relations[relation])[0]}</div>
-          </button>
-          <button class="dot-line-wrapper">
-            <div class="target-extreme extreme">{Object.keys(data.thot.relations[relation])[0]}</div>
-            <button class="dot-line"></button>
-            <div class="source-extreme extreme">{Object.keys(data.thot.relations[relation])[1]}</div>
-          </button>
-          <!-- {#each Object.keys(data.thot.relations[relation]) as extreme}
-            <button on:click={expandRelationExtreme(extreme)} style="width: 100%">
-              {extreme}
-            </button>
-            <svg height="6">
-              <line x1="0" y1="0" x2="200" y2="0" style="stroke:rgb(0,0,0);stroke-width:6" />
-            </svg>
-          {/each} -->
+          on:expandRelationExtreme={(e)=>{console.log(e); dispatch(
+            "expandRelationExtreme", 
+            {extreme_values: Object.values(data.thot.relations[relation][e.detail]), 
+            page_index: page_index}) }}/>
+          <RelationExtreme 
+          targetExtreme={Object.keys(data.thot.relations[relation])[0]} 
+          sourceExtreme={Object.keys(data.thot.relations[relation])[1]}
+          page_index={page_index}
+          on:expandRelationExtreme={(e)=>{console.log(e); dispatch(
+            "expandRelationExtreme", 
+            {extreme_values: Object.values(data.thot.relations[relation][e.detail]), 
+            page_index: page_index}) }}/>
         </div>
       {/each}
     </div>
@@ -401,6 +391,7 @@
     border: 1px solid transparent;
     border-radius: 10px;
     .dot-line-wrapper {
+      position: absolute;
       width: 40px;
       height: fit-content;
       padding: 17px;
