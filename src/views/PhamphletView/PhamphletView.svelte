@@ -48,6 +48,8 @@
   
   setContext("focusContainerAt", focusContainerAt)
 
+  
+
   function expandRelationExtreme(e) {
     console.log(e.detail)
     let extreme_values = e.detail.extreme_values
@@ -74,20 +76,27 @@
     
   }
   setContext('expandRelationExtreme', expandRelationExtreme)
+  
+  let lines = []
 
+  function getPageDividerPos(i) {
+    return lines[i].getBoundingClientRect()
+  }
 
 </script>
 PhamphletView
 <main>
   {#each $pages_data as page_data, i}
     <div class='page'>
-    {#each page_data as data, i}
-      <Container {data} bind:this={Containers[i]} on:expandRelationExtreme={expandRelationExtreme}/>
-    {/each}
+      {#each page_data as data, i}
+        <Container {data} 
+        bind:this={Containers[i]} 
+        on:expandRelationExtreme={expandRelationExtreme}/>
+      {/each}
     </div> 
+    <div id="line" bind:this={lines[i]}></div>
   {/each}
 </main>
-
 
 <style>
   main {
@@ -96,5 +105,10 @@ PhamphletView
   }
   .page {
     width: fit-content;
+    /* border-right: 1px solid gray; */
+  }
+  #line {
+    width: 1px;
+    background-color: black;
   }
 </style>

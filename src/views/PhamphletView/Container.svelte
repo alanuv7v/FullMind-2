@@ -165,9 +165,12 @@
       } else {
         rightRelationsPanelWrapper.append(relationsPanel)
       } */
-      leftRelationsPanelWrapper.append(relationsPanel.cloneNode())
+      leftRelationsPanelWrapper.append(relationsPanel.cloneNode(true))
     }
   )
+
+  const getPageDividerPos = getContext('getPageDividerPos')
+  getPageDividerPos(i)
 
  
 
