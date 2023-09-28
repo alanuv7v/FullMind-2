@@ -1,5 +1,5 @@
 <script>
-  import {createEventDispatcher} from "svelte"
+  import {onMount, createEventDispatcher} from "svelte"
   import Two from "two.js"
 
   export let targetExtreme, sourceExtreme, page_index
@@ -16,11 +16,19 @@
     console.log(OnHoverLength)
   }
 
+  var points = [
+    new Two.Anchor(0, 0, 0, 0, 0, 0),
+    new Two.Anchor(10, 10, 0, 0, 0, 0)
+  ];
   let pathWrapper;
-  let two = new Two();
-  let Path = two.makePath(0,0,50,0)
-  two.appendTo(pathWrapper);
-  two.update();
+  
+  onMount(() => {
+      let two = new Two();
+      let Path = two.makePath(points)
+      two.appendTo(pathWrapper);
+      two.update();
+    }
+  )
   
 </script>
 
