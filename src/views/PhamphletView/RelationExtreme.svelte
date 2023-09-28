@@ -18,7 +18,7 @@
 
   var points = [
     new Two.Anchor(0, 0, 0, 0, 0, 0),
-    new Two.Anchor(10, 10, 0, 0, 0, 0)
+    new Two.Anchor(100, 0, 0, 0, 0, 0)
   ];
   let pathWrapper;
   
@@ -48,6 +48,9 @@ on:mouseleave={()=>{wrapper.style.width='100%'}}>
   * {
     transition: all 0.5s ease;
   }
+#pathWrapper {
+  position: absolute;
+}
 .dot-line-wrapper {
   width: 100%;
   
