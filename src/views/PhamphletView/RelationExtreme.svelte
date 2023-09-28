@@ -1,5 +1,7 @@
 <script>
   import {createEventDispatcher} from "svelte"
+  import Two from "two.js"
+
   export let targetExtreme, sourceExtreme, page_index
   const dispatch = createEventDispatcher()
 
@@ -13,6 +15,12 @@
     OnHoverLength = ((2*(linePos.left - wrapper.getBoundingClientRect().left)) + 'px')
     console.log(OnHoverLength)
   }
+
+  let pathWrapper;
+  let two = new Two();
+  let Path = two.makePath(0,0,50,0)
+  two.appendTo(pathWrapper);
+  two.update();
   
 </script>
 
@@ -21,6 +29,7 @@ bind:this={wrapper}
 on:click={() => {dispatch("expandRelationExtreme", targetExtreme)}}
 on:mouseenter={()=>{wrapper.style.width=OnHoverLength}}
 on:mouseleave={()=>{wrapper.style.width='100%'}}>
+  <div id="pathWrapper" bind:this={pathWrapper}></div>
   <div class="target-extreme extreme">{targetExtreme}</div>
   <button class="dot-line" bind:this={dotLine}></button>
   <div class="source-extreme extreme">{sourceExtreme}</div>
