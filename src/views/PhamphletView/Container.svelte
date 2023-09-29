@@ -168,10 +168,8 @@
     }
   )
 
-  export let linePos
+  export let line
 
-  $: console.log($linePos)
-  
  
 
   
@@ -208,7 +206,7 @@
           targetExtreme={Object.keys(data.thot.relations[relation])[1]} 
           sourceExtreme={Object.keys(data.thot.relations[relation])[0]}
           page_index={page_index}
-          linePos={$linePos}
+          line={line}
           on:expandRelationExtreme={(e)=>{console.log(e); dispatch(
             "expandRelationExtreme", 
             {extreme_values: Object.values(data.thot.relations[relation][e.detail]), 
@@ -219,7 +217,7 @@
           targetExtreme={Object.keys(data.thot.relations[relation])[0]} 
           sourceExtreme={Object.keys(data.thot.relations[relation])[1]}
           page_index={page_index}
-          linePos={$linePos}
+          line={line}
           on:expandRelationExtreme={(e)=>{console.log(e); dispatch(
             "expandRelationExtreme", 
             {extreme_values: Object.values(data.thot.relations[relation][e.detail]), 

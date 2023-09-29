@@ -7,15 +7,11 @@
   let Containers = []
   let line
 
-  let linePos = writable(null)
-  
-  $: if (line) {linePos.update(data => line.getBoundingClientRect())}
-
 </script>
 
 {#each page_data as data, i}
   <Container {data} 
-  {linePos}
+  {line}
   bind:this={Containers[i]} 
   on:expandRelationExtreme/>
 {/each}

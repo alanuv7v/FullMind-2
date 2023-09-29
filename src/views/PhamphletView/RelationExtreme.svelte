@@ -5,39 +5,56 @@
   export let targetExtreme, sourceExtreme, page_index
   const dispatch = createEventDispatcher()
 
-  export let linePos
+  export let line
   let wrapper
   let dotLine
 
-  let OnHoverLength = '0px'
+  let OnHoverLength
+  let PathOnHoverLength
 
-  $: if (linePos && dotLine) {
-    OnHoverLength = ((2*(linePos.left - wrapper.getBoundingClientRect().left)) + 'px')
-    console.log(OnHoverLength)
+  $: if (line && dotLine) {
+    OnHoverLength = 2*(line.getBoundingClientRect().left - wrapper.getBoundingClientRect().left)
+    PathOnHoverLength = 2*(line.getBoundingClientRect().left - pathWrapper.getBoundingClientRect().left)
+    updatePath()
   }
 
-  var points = [
-    new Two.Anchor(0, 0, 0, 0, 0, 0),
-    new Two.Anchor(100, 0, 0, 0, 0, 0)
-  ];
   let pathWrapper;
+
+  let two = new Two();
   
+  function updatePath() {
+    let points = [
+      new Two.Anchor(0, 0, 0, 0, 0, 0),
+      new Two.Anchor(PathOnHoverLength, 0, 0, 0, 0, 0)
+    ]
+    let Path = two.makePath(points)
+    two.update()
+  }
+
   onMount(() => {
-      let two = new Two();
-      let Path = two.makePath(points)
       two.appendTo(pathWrapper);
-      two.update();
+      updatePath()
     }
   )
+
+  function onWrapperHover() {
+    wrapper.style.width = (OnHoverLength + 'px')
+    updatePath()
+
+  }
+  function onWrapperNotHover() {
+    wrapper.style.width = '100%'
+  }
   
 </script>
 
 <button class="dot-line-wrapper" 
 bind:this={wrapper}
 on:click={() => {dispatch("expandRelationExtreme", targetExtreme)}}
-on:mouseenter={()=>{wrapper.style.width=OnHoverLength}}
-on:mouseleave={()=>{wrapper.style.width='100%'}}>
+on:mouseenter={()=>{onWrapperHover()}}
+on:mouseleave={()=>{onWrapperNotHover()}}>
   <div id="pathWrapper" bind:this={pathWrapper}></div>
+  <div>{OnHoverLength}</div>
   <div class="target-extreme extreme">{targetExtreme}</div>
   <button class="dot-line" bind:this={dotLine}></button>
   <div class="source-extreme extreme">{sourceExtreme}</div>
@@ -47,6 +64,7 @@ on:mouseleave={()=>{wrapper.style.width='100%'}}>
 @import "../../themes/green_cozy/global_variables"
   * {
     transition: all 0.5s ease;
+    box-sizing: border-box;
   }
 #pathWrapper {
   position: absolute;
@@ -58,7 +76,7 @@ on:mouseleave={()=>{wrapper.style.width='100%'}}>
   padding: 15px;
   display: flex;
   flex-direction: column;
-  border: none;
+  border: 2px solid gray;
   background: none;
   box-shadow: none;
 
