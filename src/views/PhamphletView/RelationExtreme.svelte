@@ -1,6 +1,7 @@
 <script>
   import {onMount, createEventDispatcher} from "svelte"
   import Two from "two.js"
+  import anime from 'animejs/lib/anime.es.js';
 
   export let targetExtreme, sourceExtreme, page_index
   const dispatch = createEventDispatcher()
@@ -21,16 +22,44 @@
   let pathWrapper;
 
   let two = new Two();
+  let Path
   
   function updatePath() {
+    two.clear()
     let points = [
       new Two.Anchor(0, 0, 0, 0, 0, 0),
       new Two.Anchor(PathOnHoverLength, 0, 0, 0, 0, 0)
     ]
-    let Path = two.makePath(points)
+    Path = two.makePath(points)
+    Path.linewidth = 4
     two.update()
+    return Path
   }
 
+  function PathAnim() {
+      let targetPath = pathWrapper.querySelector("path")
+      console.log(pathWrapper)
+      console.log(targetPath)
+      anime({
+        targets: targetPath,
+        strokeDashoffset: [anime.setDashoffset, 0],
+        easing: "linear",
+        duration: 2000,
+        loop: true,
+        direction: 'alternate',
+      });
+      /* var path = anime.path(targetPath);
+
+      anime({
+        targets: wrapper.querySelector("#w"),
+        translateX: path('x'),
+        translateY: path('y'),
+        rotate: path('angle'),
+        easing: 'linear',
+        duration: 2000,
+        loop: true
+      }); */
+  }
   onMount(() => {
       two.appendTo(pathWrapper);
       updatePath()
@@ -38,23 +67,24 @@
   )
 
   function onWrapperHover() {
-    wrapper.style.width = (OnHoverLength + 'px')
-    updatePath()
+    //wrapper.style.width = (OnHoverLength + 'px')
+    //updatePath()
+    PathAnim()
 
   }
   function onWrapperNotHover() {
-    wrapper.style.width = '100%'
+    //wrapper.style.width = '100%'
   }
   
+  
 </script>
-
 <button class="dot-line-wrapper" 
 bind:this={wrapper}
 on:click={() => {dispatch("expandRelationExtreme", targetExtreme)}}
 on:mouseenter={()=>{onWrapperHover()}}
 on:mouseleave={()=>{onWrapperNotHover()}}>
+  <div id='w' style="position:absolute">!!!</div>
   <div id="pathWrapper" bind:this={pathWrapper}></div>
-  <div>{OnHoverLength}</div>
   <div class="target-extreme extreme">{targetExtreme}</div>
   <button class="dot-line" bind:this={dotLine}></button>
   <div class="source-extreme extreme">{sourceExtreme}</div>
@@ -62,14 +92,20 @@ on:mouseleave={()=>{onWrapperNotHover()}}>
 
 <style lang="stylus">
 @import "../../themes/green_cozy/global_variables"
-  * {
-    transition: all 0.5s ease;
-    box-sizing: border-box;
-  }
+* {
+  box-sizing: border-box;
+}
 #pathWrapper {
   position: absolute;
 }
+svg {
+  transition: none !important; 
+}
+svg * {
+  transition: none !important; 
+}
 .dot-line-wrapper {
+  transition: all 0.5s ease;
   width: 100%;
   
   height: 100%;

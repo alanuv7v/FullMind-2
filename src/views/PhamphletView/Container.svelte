@@ -164,7 +164,7 @@
       } else {
         rightRelationsPanelWrapper.append(relationsPanel)
       } */
-      leftRelationsPanelWrapper.append(relationsPanel.cloneNode(true))
+      //leftRelationsPanelWrapper.append(relationsPanel.cloneNode(true))
     }
   )
 
@@ -237,10 +237,6 @@
   /* :global로 적은건 아예 모든, 어떤 svelte 파일의 element든지 다 적용되니까 여기서는 쓰지 말고 *로 대체하자. 
   아예 글로벌하게 만들 스타일은 다른데에 적자.*/
   
-  :global(*) {
-    transition: all 0.5s ease;
-  }
-  
 
   :global(div#content:hover) {
     border-color: rgba(240, 255, 239, 1) !important;
@@ -267,7 +263,8 @@
 
   * {
     box-sizing: border-box;
-    /* transition: background-color 1s steps(200); */
+    /* transition: background-color 1s steps(200); */\
+    transition: all 0.5s ease;
   }
 
   main {
