@@ -24,6 +24,7 @@
     /* border-right: 1px solid gray; */
   }
   #line {
+    margin-left: 100px;
     width: 1px;
     background-color: black;
   }
